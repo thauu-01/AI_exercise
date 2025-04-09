@@ -450,6 +450,9 @@ class Button:
 
     def draw(self):
         pygame.draw.rect(WINDOW, self.color, self.rect)
+        # Kiểm tra hover
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            pygame.draw.rect(WINDOW, (255, 255, 0), self.rect, 3)  # Viền vàng khi hover
         text = FONT.render(self.text, True, BLACK)
         text_rect = text.get_rect(center=self.rect.center)
         WINDOW.blit(text, text_rect)
@@ -473,6 +476,7 @@ class PuzzleGUI:
         self.step_interval = 1000
         self.is_solving = False
         self.beam_width = 3
+        
         self.buttons = [
             Button("DFS", 550, 50, 120, 50, lambda: self.solve(dfs), BUTTON_COLORS[0]),
             Button("BFS", 550, 110, 120, 50, lambda: self.solve(bfs), BUTTON_COLORS[1]),
@@ -489,7 +493,8 @@ class PuzzleGUI:
             Button("Beam Width +", 1100, 110, 200, 50, self.increase_beam_width, (100, 149, 237)),
             Button("Beam Width -", 1100, 170, 200, 50, self.decrease_beam_width, (100, 149, 237)),
             Button("Reset", 550, 590, 120, 50, self.reset, (192, 192, 192)),
-            Button("Random", 790, 590, 120, 50, self.randomize, (255, 165, 0))
+            Button("Random", 790, 590, 120, 50, self.randomize, (255, 165, 0)),
+            Button("Stop", 1050, 590, 120, 50, self.stop_solving, (255, 0, 0))
         ]
 
     def draw_board(self, state, x_offset, y_offset, title, is_input=False):
@@ -578,17 +583,25 @@ class PuzzleGUI:
                 i = (y - 100) // CELL_SIZE
                 j = (x - 50) // CELL_SIZE
                 self.selected_cell = (i, j)
-        
+
         elif event.type == pygame.KEYDOWN and self.selected_cell:
+            i, j = self.selected_cell
             if pygame.K_0 <= event.key <= pygame.K_9:
                 num = event.key - pygame.K_0
-                i, j = self.selected_cell
                 idx = i * BOARD_SIZE + j
                 if num == 0 or num not in self.input_state or self.input_state[idx] == num:
                     self.input_state[idx] = num
             elif event.key == pygame.K_BACKSPACE:
-                i, j = self.selected_cell
                 self.input_state[i * BOARD_SIZE + j] = 0
+            # Di chuyển ô bằng phím mũi tên
+            elif event.key == pygame.K_LEFT:
+                self.selected_cell = (i, max(0, j - 1))
+            elif event.key == pygame.K_RIGHT:
+                self.selected_cell = (i, min(BOARD_SIZE - 1, j + 1))
+            elif event.key == pygame.K_UP:
+                self.selected_cell = (max(0, i - 1), j)
+            elif event.key == pygame.K_DOWN:
+                self.selected_cell = (min(BOARD_SIZE - 1, i + 1), j)
 
     def solve(self, solver):
         if 0 in self.input_state and len(set(self.input_state)) == 9 and all(0 <= x <= 8 for x in self.input_state):
@@ -661,6 +674,12 @@ class PuzzleGUI:
 
     def decrease_beam_width(self):
         self.beam_width = max(1, self.beam_width - 1)
+
+    def stop_solving(self):
+        self.is_solving = False
+        self.solution = None
+        self.no_solution_message = "Da dung giai!"
+        self.message_timer = 180
 
     def update(self):
         if self.solution and self.step < len(self.solution) - 1:
