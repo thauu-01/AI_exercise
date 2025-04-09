@@ -11,18 +11,18 @@ Xây dựng một chương trình giải bài toán **8-Puzzle** sử dụng nhi
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **Breadth-First Search (BFS)** | Tìm kiếm theo chiều rộng, đảm bảo đường đi ngắn nhất.             | |
-| **Depth-First Search (DFS)**   | Tìm kiếm theo chiều sâu, có thể không tìm được đường ngắn nhất.    | |
-| **Uniform Cost Search (UCS)**  | Tìm kiếm dựa trên chi phí, tương tự BFS nhưng với trọng số.        |  |
-| **Iterative Deepening DFS (IDDFS)** | Kết hợp DFS và giới hạn độ sâu, hiệu quả hơn DFS.                 |  |
-| **Greedy Best-First Search**   | Sử dụng heuristic để ưu tiên trạng thái hứa hẹn nhất.             |  |
-| **A* Search**                 | Kết hợp chi phí và heuristic, tìm đường ngắn nhất hiệu quả.        |  |
-| **IDA* Search**               | Phiên bản tối ưu của A* với giới hạn chi phí.                     |  |
-| **Simple Hill Climbing**       | Leo dốc đơn giản, dễ kẹt ở cực trị cục bộ.                       |  |
-| **Steepest Hill Climbing**     | Kiểm tra tất cả lân cận, chọn tốt nhất, nhưng vẫn có thể kẹt.     |  |
-| **Stochastic Hill Climbing**   | Leo dốc ngẫu nhiên, tránh cực trị cục bộ tốt hơn.                | |
-| **Simulated Annealing**        | Sử dụng nhiệt độ để chấp nhận giải pháp xấu, tìm giải toàn cục.    |  |
-| **Beam Search**                | Tìm kiếm chùm, giữ lại một số lượng cố định trạng thái tốt nhất.   |  |
+| **Breadth-First Search (BFS)** | Tìm kiếm theo chiều sâu, khám phá nhánh sâu nhất trước, dùng ngăn xếp (stack). Có thể không tối ưu do không kiểm tra chi phí.             | |
+| **Depth-First Search (DFS)**   | Tìm kiếm theo chiều rộng, khám phá tất cả trạng thái ở mức hiện tại trước khi đi sâu hơn, dùng hàng đợi (queue). Đảm bảo đường đi ngắn nhất.    | |
+| **Uniform Cost Search (UCS)**  | Tìm kiếm chi phí đồng nhất, ưu tiên trạng thái có tổng chi phí thấp nhất từ gốc, dùng hàng đợi ưu tiên (priority queue).        |  |
+| **Iterative Deepening DFS (IDDFS)** | Kết hợp DFS với giới hạn độ sâu tăng dần, lặp lại cho đến khi tìm ra giải pháp, tiết kiệm bộ nhớ hơn DFS.               |  |
+| **Greedy Best-First Search**   | Tìm kiếm tham lam, chọn trạng thái có giá trị heuristic (khoảng cách Manhattan) nhỏ nhất mà không xét chi phí từ gốc.           |  |
+| **A* Search**                 | Tìm kiếm tối ưu, kết hợp chi phí từ gốc (g) và heuristic (h = Manhattan + Linear Conflict), đảm bảo đường đi ngắn nhất nếu heuristic thỏa mãn tính chất tam giác.       |  |
+| **IDA* Search**               | Kết hợp A* với giới hạn ngưỡng heuristic tăng dần, tiết kiệm bộ nhớ hơn A*.                   |  |
+| **Simple Hill Climbing**       | Leo đồi đơn giản, chọn trạng thái láng giềng tốt hơn hiện tại dựa trên heuristic, dễ bị kẹt ở cực trị cục bộ.                     |  |
+| **Steepest Hill Climbing**     | Leo đồi dốc nhất, chọn trạng thái láng giềng tốt nhất dựa trên heuristic trong tất cả các láng giềng, vẫn có thể kẹt ở cực trị cục bộ.     |  |
+| **Stochastic Hill Climbing**   | Leo đồi dốc nhất, chọn trạng thái láng giềng tốt nhất dựa trên heuristic trong tất cả các láng giềng, vẫn có thể kẹt ở cực trị cục bộ.            | |
+| **Simulated Annealing**        | Mô phỏng ủ nhiệt, chấp nhận cả trạng thái xấu hơn với xác suất giảm dần theo "nhiệt độ", giúp thoát cực trị cục bộ.    |  |
+| **Beam Search**                | Tìm kiếm chùm, giữ số lượng trạng thái giới hạn (beam width) ở mỗi mức, kết hợp giữa BFS và tính tham lam.   |  |
 
 ## 👨‍💻 Tác giả
 
