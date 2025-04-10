@@ -20,7 +20,7 @@ Xây dựng một chương trình giải bài toán **8-Puzzle** sử dụng nhi
 | **IDA* Search**               | Kết hợp A* với giới hạn ngưỡng heuristic tăng dần, tiết kiệm bộ nhớ hơn A*.                   | ![IDA*](gifs/ida.gif)               |
 | **Simple Hill Climbing**       | Leo đồi đơn giản, chọn trạng thái láng giềng tốt hơn hiện tại dựa trên heuristic, dễ bị kẹt ở cực trị cục bộ.                     |     |
 | **Steepest Hill Climbing**     | Leo đồi dốc nhất, chọn trạng thái láng giềng tốt nhất dựa trên heuristic trong tất cả các láng giềng, vẫn có thể kẹt ở cực trị cục bộ.     |  |
-| **Stochastic Hill Climbing**   | Leo đồi ngẫu nhiên, chọn trạng thái láng giềng ngẫu nhiên nhưng ưu tiên trạng thái tốt hơn, giúp thoát cực trị cục bộ.            |  |
+| **Stochastic Hill Climbing**   | Leo đồi ngẫu nhiên, chọn trạng thái láng giềng ngẫu nhiên nhưng ưu tiên trạng thái tốt hơn, giúp thoát cực trị cục bộ.            | ![Stochastic Hill](gifs/stochastic_hill.gif) |
 | **Simulated Annealing**        | Mô phỏng ủ nhiệt, chấp nhận cả trạng thái xấu hơn với xác suất giảm dần theo "nhiệt độ", giúp thoát cực trị cục bộ.    |  |
 | **Beam Search**                | Tìm kiếm chùm, giữ số lượng trạng thái giới hạn (beam width) ở mỗi mức, kết hợp giữa BFS và tính tham lam.   | ![Beam Search](gifs/beam_search.gif)     |
 
