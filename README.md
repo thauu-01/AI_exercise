@@ -17,7 +17,7 @@ Xây dựng một chương trình giải bài toán **8-Puzzle** sử dụng nhi
 | **Iterative Deepening DFS (IDDFS)** | Kết hợp DFS với giới hạn độ sâu tăng dần, lặp lại cho đến khi tìm ra giải pháp, tiết kiệm bộ nhớ hơn DFS.               |                 |
 | **Greedy Best-First Search**   | Tìm kiếm tham lam, chọn trạng thái có giá trị heuristic (khoảng cách Manhattan) nhỏ nhất mà không xét chi phí từ gốc.           | ![Greedy](gifs/greedy.gif)               |
 | **A* Search**                 | Tìm kiếm tối ưu, kết hợp chi phí từ gốc (g) và heuristic (h = Manhattan + Linear Conflict), đảm bảo đường đi ngắn nhất nếu heuristic thỏa mãn tính chất tam giác.       |                 |
-| **IDA* Search**               | Kết hợp A* với giới hạn ngưỡng heuristic tăng dần, tiết kiệm bộ nhớ hơn A*.                   | ![IDA*](gifs/ida_star.gif)               |
+| **IDA* Search**               | Kết hợp A* với giới hạn ngưỡng heuristic tăng dần, tiết kiệm bộ nhớ hơn A*.                   | ![IDA*](gifs/ida.gif)               |
 | **Simple Hill Climbing**       | Leo đồi đơn giản, chọn trạng thái láng giềng tốt hơn hiện tại dựa trên heuristic, dễ bị kẹt ở cực trị cục bộ.                     |     |
 | **Steepest Hill Climbing**     | Leo đồi dốc nhất, chọn trạng thái láng giềng tốt nhất dựa trên heuristic trong tất cả các láng giềng, vẫn có thể kẹt ở cực trị cục bộ.     |  |
 | **Stochastic Hill Climbing**   | Leo đồi ngẫu nhiên, chọn trạng thái láng giềng ngẫu nhiên nhưng ưu tiên trạng thái tốt hơn, giúp thoát cực trị cục bộ.            |  |
