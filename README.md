@@ -13,10 +13,10 @@ Xây dựng một chương trình giải bài toán **8-Puzzle** sử dụng nhi
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
 | **Breadth-First Search (BFS)** | Tìm kiếm theo chiều rộng, khám phá tất cả trạng thái ở mức hiện tại trước khi đi sâu hơn, dùng hàng đợi (queue). Đảm bảo đường đi ngắn nhất.    | ![BFS](gifs/bfs.gif)                     |
 | **Depth-First Search (DFS)**   | Tìm kiếm theo chiều sâu, khám phá nhánh sâu nhất trước, dùng ngăn xếp (stack). Có thể không tối ưu do không kiểm tra chi phí.             |                    |
-| **Uniform Cost Search (UCS)**  | Tìm kiếm chi phí đồng nhất, ưu tiên trạng thái có tổng chi phí thấp nhất từ gốc, dùng hàng đợi ưu tiên (priority queue).        |                     |
-| **Iterative Deepening DFS (IDDFS)** | Kết hợp DFS với giới hạn độ sâu tăng dần, lặp lại cho đến khi tìm ra giải pháp, tiết kiệm bộ nhớ hơn DFS.               |                 |
+| **Uniform Cost Search (UCS)**  | Tìm kiếm chi phí đồng nhất, ưu tiên trạng thái có tổng chi phí thấp nhất từ gốc, dùng hàng đợi ưu tiên (priority queue).        |   ![UCS](gifs/ucs.gif)                  |
+| **Iterative Deepening DFS (IDDFS)** | Kết hợp DFS với giới hạn độ sâu tăng dần, lặp lại cho đến khi tìm ra giải pháp, tiết kiệm bộ nhớ hơn DFS.               |   ![IDDFS](gifs/iddfs.gif)              |
 | **Greedy Best-First Search**   | Tìm kiếm tham lam, chọn trạng thái có giá trị heuristic (khoảng cách Manhattan) nhỏ nhất mà không xét chi phí từ gốc.           | ![Greedy](gifs/greedy.gif)               |
-| **A* Search**                 | Tìm kiếm tối ưu, kết hợp chi phí từ gốc (g) và heuristic (h = Manhattan + Linear Conflict), đảm bảo đường đi ngắn nhất nếu heuristic thỏa mãn tính chất tam giác.       |                 |
+| **A* Search**                 | Tìm kiếm tối ưu, kết hợp chi phí từ gốc (g) và heuristic (h = Manhattan + Linear Conflict), đảm bảo đường đi ngắn nhất nếu heuristic thỏa mãn tính chất tam giác.       | ![A*](gifs/a_star.gif)                |
 | **IDA* Search**               | Kết hợp A* với giới hạn ngưỡng heuristic tăng dần, tiết kiệm bộ nhớ hơn A*.                   | ![IDA*](gifs/ida.gif)               |
 | **Simple Hill Climbing**       | Leo đồi đơn giản, chọn trạng thái láng giềng tốt hơn hiện tại dựa trên heuristic, dễ bị kẹt ở cực trị cục bộ.                     |     |
 | **Steepest Hill Climbing**     | Leo đồi dốc nhất, chọn trạng thái láng giềng tốt nhất dựa trên heuristic trong tất cả các láng giềng, vẫn có thể kẹt ở cực trị cục bộ.     |  |
