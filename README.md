@@ -32,7 +32,7 @@ Dưới đây là danh sách các thuật toán được triển khai trong chư
 
 
 
-##📝 Chi tiết bổ sung về các thuật toán
+## 📝 Chi tiết bổ sung về các thuật toán
 
 
 .  Breadth-First Search (BFS):
