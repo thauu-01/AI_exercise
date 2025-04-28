@@ -235,6 +235,35 @@ Giao diện đồ họa (GUI): Sử dụng thư viện pygame để tạo giao d
 •  Xử lý lỗi: Hiển thị thông báo khi trạng thái ban đầu không khả thi hoặc thuật toán không tìm được giải pháp.
 
 
+
+## 🚀 Hướng dẫn chạy chương trình
+•  Yêu cầu: 
+
+      •	Python 3.x
+      
+      •	Thư viện: pygame, numpy
+      
+      •	Cài đặt thư viện: pip install pygame numpy
+      
+•  Hướng dẫn sử dụng GUI: 
+
+      •	Nhập trạng thái ban đầu: Click vào ô trên bảng "Trạng thái đầu", nhập số từ 0-8 (0 là ô trống).
+      
+      •	Tạo trạng thái ngẫu nhiên: Nhấn nút "Random" hoặc tạo trạng thái tùy thích.
+      
+      •	Chọn thuật toán: Nhấn nút tương ứng với thuật toán (DFS, BFS, A*, v.v.).
+      
+      •	Điều chỉnh tốc độ: Chọn tốc độ từ ComboBox (1x, 2x, 5x, 10x).
+      
+      •	Beam Search: Sử dụng nút "Beam Width +" hoặc "Beam Width -" để điều chỉnh độ rộng chùm.
+      
+      •	Dừng/tiếp tục: Nhấn "Stop" để dừng, "Continue" để tiếp tục quá trình giải.
+      
+      •	Reset: Nhấn "Reset" để đưa chương trình về trạng thái ban đầu.
+
+
+
+
 ## 🔍 Kết luận
 Chương trình cung cấp một nền tảng toàn diện để nghiên cứu và so sánh các thuật toán AI trong bài toán 8-Puzzle. Giao diện trực quan và hỗ trợ nhiều thuật toán giúp người dùng dễ dàng thử nghiệm và học hỏi về cách các thuật toán hoạt động. Các thuật toán như A*, IDA*, và Simulated Annealing nổi bật về hiệu suất và khả năng xử lý các trạng thái phức tạp, trong khi các phương pháp như Trust-Based Search và Backtracking CSP mang lại góc nhìn mới về cách tiếp cận bài toán.
 
