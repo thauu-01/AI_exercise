@@ -64,6 +64,7 @@ Dưới đây là danh sách các thuật toán được triển khai trong chư
     •	Ứng dụng: Phù hợp khi chi phí giữa các trạng thái khác nhau.
     
 .  Iterative Deepening DFS (IDDFS): 
+
     •	Ưu điểm: Kết hợp ưu điểm của BFS (đường đi ngắn nhất) và DFS (tiết kiệm bộ nhớ).
     
     •	Nhược điểm: Lặp lại việc khám phá trạng thái, dẫn đến thời gian chạy lâu hơn BFS.
@@ -202,7 +203,32 @@ Dưới đây là danh sách các thuật toán được triển khai trong chư
     
     •	Ứng dụng: Phù hợp với bài toán CSP hoặc khi cần đảm bảo tính hợp lệ của trạng thái.
 
+## 🌟 Các tính năng của chương trình
+Giao diện đồ họa (GUI): Sử dụng thư viện pygame để tạo giao diện trực quan, cho phép người dùng: 
 
+      •	Nhập trạng thái ban đầu bằng cách chọn ô và nhập số (0-8).
+      
+      •	Tạo trạng thái ban đầu ngẫu nhiên (đảm bảo khả thi).
+      
+      •	Chọn thuật toán để giải và theo dõi quá trình giải từng bước.
+      
+      •	Điều chỉnh tốc độ hiển thị bước giải (1x, 2x, 5x, 10x).
+      
+      •	Tăng/giảm độ rộng chùm (beam width) cho Beam Search.
+      
+      •	Hiển thị số bước, số trạng thái mở rộng, và thời gian thực thi.
+      
+•  Kiểm tra tính khả thi: Hàm is_solvable kiểm tra trạng thái ban đầu có thể đạt được trạng thái mục tiêu hay không dựa trên số lần đảo ngược (inversions).
+
+•  Heuristic cải tiến: 
+
+      •	Khoảng cách Manhattan: Tính tổng khoảng cách các ô từ vị trí hiện tại đến vị trí mục tiêu.
+      
+      •	Linear Conflict: Bổ sung chi phí khi hai ô trong cùng hàng/cột cần hoán đổi vị trí, cải thiện độ chính xác của heuristic.
+      
+•  Hỗ trợ nhiều thuật toán: Cho phép so sánh hiệu suất giữa các thuật toán dựa trên số bước, số trạng thái mở rộng, và thời gian chạy. 
+
+•  Xử lý lỗi: Hiển thị thông báo khi trạng thái ban đầu không khả thi hoặc thuật toán không tìm được giải pháp.
 
 
 ## 👨‍💻 Tác giả
