@@ -113,12 +113,14 @@ def linear_conflict(state, goal):
     return conflict
 
 def dfs(ban_dau, dich):
+
     stack = [(ban_dau, [ban_dau])]  
     frontier = {ban_dau}  
     explored = set()  
     expanded = 0
 
     while stack:
+
         current_state, duong_di = stack.pop()
         frontier.remove(current_state)
         explored.add(current_state)
@@ -136,52 +138,49 @@ def dfs(ban_dau, dich):
 
 def bfs(ban_dau, dich):
 
-    queue = deque([(ban_dau, [ban_dau])]) 
+    queue = deque([(ban_dau, [ban_dau])])  
     frontier = {ban_dau}  
     explored = set()  
     expanded = 0
 
     while queue:
-       
+
         current_state, duong_di = queue.popleft()
-        frontier.remove(current_state)  
-        explored.add(current_state)  
+        frontier.remove(current_state) 
+        explored.add(current_state) 
         expanded += 1
 
-        
         for next_state in get_next_states(current_state):
             if next_state not in explored and next_state not in frontier:
-                
+
                 if next_state == dich:
                     return duong_di + [next_state], expanded
-                
                 queue.append((next_state, duong_di + [next_state]))
                 frontier.add(next_state)
 
     return None, expanded
 
 def ucs(ban_dau, dich):
-    
+
     pq = [(0, 0, ban_dau, [ban_dau])]  
-    frontier = {ban_dau: 0}  
+    frontier = {ban_dau: 0} 
     explored = set()  
     expanded = 0
-    counter = 0  
+    counter = 0 
 
     while pq:
         cost, _, current_state, duong_di = heapq.heappop(pq)
         
-        
         if current_state not in frontier:
             continue
         
-       
         del frontier[current_state]
         explored.add(current_state)
         expanded += 1
 
         if current_state == dich:
             return duong_di, expanded
+
         for next_state in get_next_states(current_state):
             if next_state not in explored:
                 new_cost = cost + 1  
@@ -230,28 +229,25 @@ def iddfs(ban_dau, dich):
         max_depth += 1
 
 def greedy_search(ban_dau, dich):
-   
-    pq = [(manhattan_distance(ban_dau, dich), 0, ban_dau, [ban_dau])]  
-    frontier = {ban_dau: manhattan_distance(ban_dau, dich)}  
-    explored = set()  
+
+    pq = [(manhattan_distance(ban_dau, dich), 0, ban_dau, [ban_dau])] 
+    frontier = {ban_dau: manhattan_distance(ban_dau, dich)} 
+    explored = set() 
     expanded = 0
-    counter = 0  
+    counter = 0 
 
     while pq:
         h_value, _, current_state, duong_di = heapq.heappop(pq)
         
-        
         if current_state not in frontier:
             continue
         
-    
         del frontier[current_state]
         explored.add(current_state)
         expanded += 1
 
         if current_state == dich:
             return duong_di, expanded
-
 
         for next_state in get_next_states(current_state):
             if next_state not in explored and next_state not in frontier:
@@ -264,11 +260,11 @@ def greedy_search(ban_dau, dich):
 
 def a_star(ban_dau, dich):
 
-    pq = [(manhattan_distance(ban_dau, dich), 0, 0, ban_dau, [ban_dau])] 
+    pq = [(manhattan_distance(ban_dau, dich), 0, 0, ban_dau, [ban_dau])]  
     frontier = {ban_dau: (manhattan_distance(ban_dau, dich), 0)}  
-    explored = set()  
+    explored = set() 
     expanded = 0
-    counter = 0  
+    counter = 0 
 
     while pq:
         f_value, g_value, _, current_state, duong_di = heapq.heappop(pq)
@@ -283,7 +279,6 @@ def a_star(ban_dau, dich):
         if current_state == dich:
             return duong_di, expanded
 
-
         for next_state in get_next_states(current_state):
             if next_state not in explored:
                 new_g = g_value + 1  
@@ -293,7 +288,6 @@ def a_star(ban_dau, dich):
                 if next_state not in frontier:
                     frontier[next_state] = (new_f, new_g)
                     heapq.heappush(pq, (new_f, new_g, counter, next_state, duong_di + [next_state]))
-
                 elif new_f < frontier[next_state][0]:
                     frontier[next_state] = (new_f, new_g)
                     heapq.heappush(pq, (new_f, new_g, counter, next_state, duong_di + [next_state]))
@@ -330,12 +324,12 @@ def ida_star(ban_dau, dich):
         total_expanded += exp
         if result:
             return result, total_expanded
-        if new_threshold == float('inf') or exp == 0: 
+        if new_threshold == float('inf') or exp == 0:  
             return None, total_expanded
         threshold = new_threshold
 
 def simple_hill_climbing(ban_dau, dich):
-    
+
     if ban_dau == dich:
         return [ban_dau], 0
 
@@ -352,13 +346,11 @@ def simple_hill_climbing(ban_dau, dich):
         better_found = False
         max_attempts = 10 
 
-
         neighbors = get_next_states(current_state)
         valid_neighbors = [n for n in neighbors if n not in visited]
 
         if not valid_neighbors:
-            return None, expanded 
-
+            return None, expanded  
 
         for _ in range(min(max_attempts, len(valid_neighbors))):
             neighbor = random.choice(valid_neighbors)
@@ -376,12 +368,12 @@ def simple_hill_climbing(ban_dau, dich):
             valid_neighbors.remove(neighbor)  
 
         if not better_found:
-            return None, expanded  
+            return None, expanded 
 
     return duong_di, expanded
 
 def steepest_ascent_hill_climbing(ban_dau, dich):
-   
+
     if ban_dau == dich:
         return [ban_dau], 0
 
@@ -408,7 +400,6 @@ def steepest_ascent_hill_climbing(ban_dau, dich):
                 elif h == best_h:
                     best_neighbors.append(neighbor)
 
-
         if not best_neighbors and sideways_count < max_sideways:
             for neighbor in neighbors:
                 if neighbor not in visited:
@@ -418,8 +409,7 @@ def steepest_ascent_hill_climbing(ban_dau, dich):
                         best_h = h
 
         if not best_neighbors:
-            return None, expanded 
-
+            return None, expanded
 
         current_state = random.choice(best_neighbors)
         duong_di.append(current_state)
@@ -432,7 +422,7 @@ def steepest_ascent_hill_climbing(ban_dau, dich):
     return duong_di, expanded
 
 def stochastic_hill_climbing(ban_dau, dich):
-   
+
     if ban_dau == dich:
         return [ban_dau], 0
 
@@ -442,8 +432,8 @@ def stochastic_hill_climbing(ban_dau, dich):
     expanded = 0
     max_sideways = 100  
     sideways_count = 0
-    temperature = 10.0  
-    cooling_rate = 0.99  
+    temperature = 10.0 
+    cooling_rate = 0.99 
 
     while current_state != dich:
         expanded += 1
@@ -451,13 +441,12 @@ def stochastic_hill_climbing(ban_dau, dich):
         valid_neighbors = [n for n in neighbors if n not in visited]
         
         if not valid_neighbors:
-            return None, expanded  
+            return None, expanded 
 
         current_h = manhattan_distance(current_state, dich) + linear_conflict(current_state, dich)
         weights = []
         next_states = []
 
-  
         for neighbor in valid_neighbors:
             h = manhattan_distance(neighbor, dich) + linear_conflict(neighbor, dich)
             delta_h = current_h - h  
@@ -484,12 +473,12 @@ def stochastic_hill_climbing(ban_dau, dich):
         else:
             sideways_count = 0
 
-        temperature *= cooling_rate  
+        temperature *= cooling_rate 
 
     return duong_di, expanded
 
 def simulated_annealing(ban_dau, dich):
-    
+
     if ban_dau == dich:
         return [ban_dau], 0
 
@@ -497,8 +486,8 @@ def simulated_annealing(ban_dau, dich):
     duong_di = [current_state]
     visited = {current_state}
     expanded = 0
-    temperature = 1000.0  
-    cooling_rate = 0.995  
+    temperature = 1000.0 
+    cooling_rate = 0.995 
     max_iterations = 10000  
     iteration = 0
 
@@ -510,12 +499,12 @@ def simulated_annealing(ban_dau, dich):
         valid_neighbors = [n for n in neighbors if n not in visited]
 
         if not valid_neighbors:
-            return None, expanded 
+            return None, expanded  
 
         next_state = random.choice(valid_neighbors)
         current_h = manhattan_distance(current_state, dich) + linear_conflict(current_state, dich)
         next_h = manhattan_distance(next_state, dich) + linear_conflict(next_state, dich)
-        delta_h = next_h - current_h 
+        delta_h = next_h - current_h  
 
         if delta_h <= 0 or random.random() < exp(-delta_h / temperature):
             current_state = next_state
@@ -533,23 +522,21 @@ def beam_search(ban_dau, dich, beam_width=3, stochastic=True):
     if ban_dau == dich:
         return [ban_dau], 0
 
-
     h = manhattan_distance(ban_dau, dich) + linear_conflict(ban_dau, dich)
     queue = [(h, ban_dau, [ban_dau])]
     visited = {ban_dau}
     expanded = 0
 
     while queue:
+
         current_level = queue
         queue = []
         expanded += len(current_level)
-
 
         next_states = []
         for _, current_state, duong_di in current_level:
             if current_state == dich:
                 return duong_di, expanded
-
 
             for next_state in get_next_states(current_state):
                 if next_state not in visited:
@@ -558,7 +545,7 @@ def beam_search(ban_dau, dich, beam_width=3, stochastic=True):
                     next_states.append((h, next_state, duong_di + [next_state]))
 
         if not next_states:
-            return None, expanded  
+            return None, expanded 
 
 
         if stochastic:
@@ -567,7 +554,7 @@ def beam_search(ban_dau, dich, beam_width=3, stochastic=True):
             if total_weight > 0:
                 weights = [w / total_weight for w in weights]
             else:
-                weights = [1.0 / len(next_states)] * len(next_states)  
+                weights = [1.0 / len(next_states)] * len(next_states) 
             selected_indices = random.choices(range(len(next_states)), weights=weights, k=min(beam_width, len(next_states)))
             queue = [next_states[i] for i in selected_indices]
         else:
@@ -578,6 +565,7 @@ def beam_search(ban_dau, dich, beam_width=3, stochastic=True):
     return None, expanded
 
 def repair_solvability(state):
+
     state = state[:] 
     if is_solvable(tuple(state)):
         return state  
@@ -601,7 +589,7 @@ def genetic_algorithm(ban_dau, dich, population_size=50, max_generations=200, cr
         
         population.append(list(start_state))
         visited.add(tuple(start_state))
-
+        
         while len(population) < size:
             state = list(range(9))
             random.shuffle(state)
@@ -620,38 +608,35 @@ def genetic_algorithm(ban_dau, dich, population_size=50, max_generations=200, cr
     def fitness(state, goal):
 
         h = manhattan_distance(state, goal) + linear_conflict(state, goal)
-        return 1.0 / (1.0 + h)  
 
     def tournament_selection(population, fitnesses, tournament_size=5):
         selected = random.sample(list(zip(population, fitnesses)), tournament_size)
         return max(selected, key=lambda x: x[1])[0]
 
     def crossover(parent1, parent2):
-
         size = len(parent1)
         crossover_point = random.randint(1, size - 1)
         child = [-1] * size
-  
+        
+
         child[:crossover_point] = parent1[:crossover_point]
         
- 
         pos = crossover_point
         for val in parent2:
             if val not in child:
                 child[pos] = val
                 pos += 1
-
+        
         if not is_solvable(tuple(child)):
             child = repair_solvability(child)
         
         return child
 
     def mutation(state):
-
         state = state[:]
         i, j = random.sample(range(len(state)), 2)
         state[i], state[j] = state[j], state[i]
-
+        
         if not is_solvable(tuple(state)):
             state = repair_solvability(state)
         
@@ -659,7 +644,6 @@ def genetic_algorithm(ban_dau, dich, population_size=50, max_generations=200, cr
 
     if ban_dau == dich:
         return [ban_dau], 0
-
 
     population = generate_initial_population(ban_dau, population_size)
     expanded = 0
@@ -669,15 +653,13 @@ def genetic_algorithm(ban_dau, dich, population_size=50, max_generations=200, cr
 
         fitnesses = [fitness(state, dich) for state in population]
         expanded += len(population)
-        
+
         for state in population:
             if tuple(state) == dich:
                 return [state], expanded
-        
 
         elite_indices = sorted(range(len(fitnesses)), key=lambda x: fitnesses[x], reverse=True)[:elite_count]
         new_population = [population[i][:] for i in elite_indices]
-        
 
         while len(new_population) < population_size:
 
@@ -690,6 +672,7 @@ def genetic_algorithm(ban_dau, dich, population_size=50, max_generations=200, cr
             else:
                 child = parent1[:]  
             
+
             if random.random() < mutation_rate:
                 child = mutation(child)
             
@@ -701,18 +684,18 @@ def genetic_algorithm(ban_dau, dich, population_size=50, max_generations=200, cr
     return None, expanded
 
 def ao_star(ban_dau, dich):
-   
+
     if ban_dau == dich:
         return [], 0
 
     def get_action_outcomes(current_state, action):
-
+ 
         next_states = []
 
         success_state = apply_action(current_state, action)
         if success_state:
             next_states.append(success_state)
-
+ 
         next_states.append(current_state)
         return next_states
 
@@ -729,9 +712,9 @@ def ao_star(ban_dau, dich):
             return tuple(new_state)
         return None
 
-    open_list = [(heuristic(ban_dau, dich), ban_dau, [], 0, [])]  
+    open_list = [(heuristic(ban_dau, dich), ban_dau, [], 0, [])]
     heapq.heapify(open_list)
-    visited = set()
+    visited = set() 
     expanded = 0
     best_plan = {ban_dau: []}
     best_f_cost = {ban_dau: heuristic(ban_dau, dich)}
@@ -753,7 +736,7 @@ def ao_star(ban_dau, dich):
         visited.add(current_state)
 
         for action in actions:
-        
+
             outcomes = get_action_outcomes(current_state, action)
             subplans = []
             all_failed = True
@@ -766,13 +749,12 @@ def ao_star(ban_dau, dich):
                 h_cost = heuristic(next_state, dich)
                 new_f_cost = new_g_cost + h_cost
 
-             
                 if next_state in path:
                     label = f"L{len(labels) + 1}"
                     labels[label] = next_state
                     subplan = [label]
                 else:
-                  
+
                     subplan = best_plan.get(next_state, [])
                     if not subplan and next_state != dich:
                         continue
@@ -781,7 +763,7 @@ def ao_star(ban_dau, dich):
                 all_failed = False
 
             if not all_failed:
-             
+
                 new_plan = [action, subplans]
                 if current_state not in best_plan or new_f_cost < best_f_cost[current_state]:
                     best_plan[current_state] = new_plan
@@ -794,17 +776,17 @@ def heuristic(state, goal):
     return manhattan_distance(state, goal) + linear_conflict(state, goal)
 
 def trust_based_search(ban_dau, dich):
-    
+
     def calculate_belief_score(state, belief_states, goal):
 
         heuristic = manhattan_distance(state, goal) + linear_conflict(state, goal)
 
         belief_factor = sum(1 for bs in belief_states 
                            if abs(manhattan_distance(bs, goal) - manhattan_distance(state, goal)) < 2)
-        belief_factor = min(belief_factor / 5.0, 2.0) 
+        belief_factor = min(belief_factor / 5.0, 2.0)  
         return heuristic - belief_factor
 
-    belief_states = deque([ban_dau], maxlen=10)  
+    belief_states = deque([ban_dau], maxlen=10) 
     pq = [(calculate_belief_score(ban_dau, belief_states, dich), 0, ban_dau, [ban_dau])]
     visited = set([ban_dau])
     expanded = 0
@@ -826,7 +808,7 @@ def trust_based_search(ban_dau, dich):
             if next_state not in visited:
                 visited.add(next_state)
                 counter += 1
-           
+
                 score = calculate_belief_score(next_state, belief_states, dich)
                 heapq.heappush(pq, (score, counter, next_state, duong_di + [next_state]))
 
@@ -836,15 +818,15 @@ def trust_based_search(ban_dau, dich):
     return None, expanded
 
 def trust_based_search_partial(ban_dau, dich):
-  
-    known_goal_row = (1, 2, 3) 
+
+    known_goal_row = (1, 2, 3)  
     full_goal = dich
 
     def calculate_belief_score(state, belief_states, visited_states):
- 
+
         state_row_1 = state[:3]
         row_match_score = sum(1 for a, b in zip(state_row_1, known_goal_row) if a == b)
-        row_trust = row_match_score * 5  
+        row_trust = row_match_score * 5 
 
         heuristic = manhattan_distance(state, full_goal) + linear_conflict(state, full_goal)
 
@@ -857,7 +839,7 @@ def trust_based_search_partial(ban_dau, dich):
         return -(heuristic - row_trust - trust_factor)
 
     def update_belief_state(belief_states, observation, action, current_state):
-   
+ 
         new_belief = []
         predicted_states = get_next_states(current_state) if action else [current_state]
         for state in predicted_states:
@@ -865,7 +847,6 @@ def trust_based_search_partial(ban_dau, dich):
             if state[:3] == observation:
                 new_belief.append(state)
         return new_belief if new_belief else belief_states
-
 
     belief_states = [ban_dau]
     pq = [(calculate_belief_score(ban_dau, belief_states, []), 0, ban_dau, [ban_dau], belief_states)]
@@ -878,11 +859,10 @@ def trust_based_search_partial(ban_dau, dich):
         score, _, current_state, duong_di, current_belief = heapq.heappop(pq)
         expanded += 1
 
-
         if current_state[:3] == known_goal_row:
             if current_state == full_goal:
                 return duong_di, expanded
-    
+
             path, extra_expanded = a_star(current_state, full_goal)
             if path:
                 return duong_di + path[1:], expanded + extra_expanded
@@ -910,9 +890,9 @@ from collections import deque
 def backtracking_csp(ban_dau, dich):
 
 
-    variables = list(range(9)) 
+    variables = list(range(9))  
     domain = {var: list(range(9)) for var in variables}  
-    assignment = {}  
+    assignment = {} 
     goal = {i: dich[i] for i in range(9)}  
     expanded = [0]  
 
@@ -928,11 +908,10 @@ def backtracking_csp(ban_dau, dich):
         return is_reachable_from_initial(temp_state, ban_dau)
 
     def is_reachable_from_initial(state, initial):
-
         state_tuple = tuple(state)
         queue = deque([(initial, [])])
         visited = {tuple(initial)}
-        max_steps = 10  
+        max_steps = 10 
         steps = 0
         while queue and steps < max_steps:
             current, _ = queue.popleft()
@@ -946,7 +925,6 @@ def backtracking_csp(ban_dau, dich):
         return False
 
     def select_unassigned_variable(assignment, variables):
-
         unassigned = [var for var in variables if var not in assignment]
         if not unassigned:
             return None
@@ -954,12 +932,15 @@ def backtracking_csp(ban_dau, dich):
         for var in unassigned:
             if ban_dau[var] == 0:
                 return var
+
         return min(unassigned, key=lambda var: len(domain[var]))
 
     def order_domain_values(var, assignment):
+
         values = domain[var]
         if not values:
             return []
+
         goal_value = goal[var]
         if goal_value in values:
             values = [goal_value] + [v for v in values if v != goal_value]
@@ -970,19 +951,22 @@ def backtracking_csp(ban_dau, dich):
         inferences = {}
         for other_var in variables:
             if other_var != var and other_var not in assignment:
+ 
                 if value in domain[other_var]:
                     inferences[other_var] = domain[other_var].copy()
                     domain[other_var].remove(value)
                     if not domain[other_var]:
-                        return None 
+                        return None  
         return inferences
 
     def backtrack(assignment, current_state):
 
         expanded[0] += 1
+
         if len(assignment) == len(variables):
             state = tuple(assignment.get(i, current_state[i]) for i in range(9))
             if state == dich:
+
                 path = [ban_dau]
                 current = list(ban_dau)
                 while current != list(state):
@@ -994,6 +978,7 @@ def backtracking_csp(ban_dau, dich):
                 return path, expanded[0]
             return None, expanded[0]
 
+
         var = select_unassigned_variable(assignment, variables)
         if var is None:
             return None, expanded[0]
@@ -1003,28 +988,26 @@ def backtracking_csp(ban_dau, dich):
                 assignment[var] = value
                 inferences = inference(var, value, assignment)
                 if inferences is not None:
-         
+
                     for inf_var, inf_values in inferences.items():
                         domain[inf_var] = inf_values
-              
+ 
                     new_state = list(current_state)
                     new_state[var] = value
                     result, exp = backtrack(assignment, new_state)
                     if result is not None:
                         return result, exp
-
+   
                     for inf_var in inferences:
                         domain[inf_var] = inferences[inf_var][:]
-
+       
                 del assignment[var]
 
         return None, expanded[0]
-
-
     result, exp = backtrack({}, ban_dau)
     return result, exp
 
-# Lop Button 
+# Lop Button (giu nguyen)
 class Button:
     def __init__(self, text, x, y, width, height, callback, color):
         self.rect = pygame.Rect(x, y, width, height)
