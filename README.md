@@ -3,7 +3,9 @@
 # Đồ án cá nhân: 8-Puzzle Solver
 
 ## 🎯 Mục tiêu
-      Xây dựng một chương trình giải bài toán 8-Puzzle sử dụng nhiều thuật toán tìm kiếm trong lĩnh vực Trí tuệ nhân tạo (AI). Chương trình cung cấp giao diện đồ họa (GUI) trực quan để nhập trạng thái ban đầu, hiển thị quá trình giải và so sánh hiệu suất của các thuật toán. Các thuật toán được triển khai bao gồm tìm kiếm không có thông tin, tìm kiếm có thông tin, và các phương pháp tối ưu hóa cục bộ, cùng với một số thuật toán đặc biệt.
+      
+   Xây dựng một chương trình giải bài toán 8-Puzzle sử dụng nhiều thuật toán tìm kiếm trong lĩnh vực Trí tuệ nhân tạo (AI). Chương trình cung cấp giao diện đồ họa (GUI) trực quan để nhập trạng thái ban đầu, hiển thị quá trình giải và so sánh hiệu suất của các thuật toán. Các thuật toán được triển khai bao gồm tìm kiếm không có thông tin, tìm kiếm có thông tin, và các phương pháp tối ưu hóa cục bộ, cùng với một số thuật toán đặc biệt.
+     
 ---
 
 ## 🧠 Các thuật toán được triển khai
