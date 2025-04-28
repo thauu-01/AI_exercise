@@ -31,7 +31,9 @@ Dưới đây là danh sách các thuật toán được triển khai trong chư
 | **Backtracking CSP**                | Tìm kiếm quay lui dựa trên bài toán thỏa mãn ràng buộc (CSP), gán giá trị cho các ô trên bảng và kiểm tra tính hợp lệ (độ khả thi và khả năng đạt từ trạng thái ban đầu).   |     |
 
 
+
 ##📝 Chi tiết bổ sung về các thuật toán
+
 
 .  Breadth-First Search (BFS):
    
@@ -193,7 +195,7 @@ Dưới đây là danh sách các thuật toán được triển khai trong chư
     
     •	Ứng dụng: Hữu ích trong các bài toán có thông tin mục tiêu hạn chế.
     
-33.  Backtracking CSP:
+.  Backtracking CSP:
     
     •	Ưu điểm: Tìm kiếm giải pháp bằng cách gán giá trị cho các ô và kiểm tra ràng buộc, đảm bảo tính khả thi.
     
