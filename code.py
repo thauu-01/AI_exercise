@@ -329,46 +329,37 @@ def ida_star(ban_dau, dich):
         threshold = new_threshold
 
 def simple_hill_climbing(ban_dau, dich):
-
+   
     if ban_dau == dich:
         return [ban_dau], 0
 
     current_state = ban_dau
     duong_di = [current_state]
-    visited = {current_state}
     expanded = 0
-    max_sideways = 100  
+    max_sideways = 20  
     sideways_count = 0
 
     while current_state != dich:
         expanded += 1
         current_h = manhattan_distance(current_state, dich) + linear_conflict(current_state, dich)
         better_found = False
-        max_attempts = 10 
 
+       
         neighbors = get_next_states(current_state)
-        valid_neighbors = [n for n in neighbors if n not in visited]
-
-        if not valid_neighbors:
-            return None, expanded  
-
-        for _ in range(min(max_attempts, len(valid_neighbors))):
-            neighbor = random.choice(valid_neighbors)
+        for neighbor in neighbors:
             h = manhattan_distance(neighbor, dich) + linear_conflict(neighbor, dich)
             if h < current_h or (h == current_h and sideways_count < max_sideways):
                 current_state = neighbor
                 duong_di.append(current_state)
-                visited.add(current_state)
                 better_found = True
                 if h == current_h:
                     sideways_count += 1
                 else:
                     sideways_count = 0
-                break
-            valid_neighbors.remove(neighbor)  
+                break  
 
         if not better_found:
-            return None, expanded 
+            return None, expanded
 
     return duong_di, expanded
 
@@ -421,42 +412,45 @@ def steepest_ascent_hill_climbing(ban_dau, dich):
 
     return duong_di, expanded
 
-def stochastic_hill_climbing(ban_dau, dich):
-
+def stochastic_hill_climbing(ban_dau, dich, max_iterations=10000, max_sideways=10, initial_temperature=100.0, cooling_rate=0.995):
+   
     if ban_dau == dich:
         return [ban_dau], 0
 
     current_state = ban_dau
     duong_di = [current_state]
-    visited = {current_state}
     expanded = 0
-    max_sideways = 100  
     sideways_count = 0
-    temperature = 10.0 
-    cooling_rate = 0.99 
+    temperature = initial_temperature
+    iteration = 0
 
-    while current_state != dich:
+    while current_state != dich and iteration < max_iterations:
         expanded += 1
-        neighbors = get_next_states(current_state)
-        valid_neighbors = [n for n in neighbors if n not in visited]
-        
-        if not valid_neighbors:
-            return None, expanded 
+        iteration += 1
 
         current_h = manhattan_distance(current_state, dich) + linear_conflict(current_state, dich)
+        
+        neighbors = get_next_states(current_state)
+        if not neighbors:
+            return None, expanded
+
         weights = []
         next_states = []
-
-        for neighbor in valid_neighbors:
+        for neighbor in neighbors:
             h = manhattan_distance(neighbor, dich) + linear_conflict(neighbor, dich)
             delta_h = current_h - h  
-            if delta_h > 0 or (delta_h == 0 and sideways_count < max_sideways) or random.random() < exp(delta_h / temperature):
+            if delta_h > 0 or (delta_h == 0 and sideways_count < max_sideways):
                 weight = exp(delta_h / temperature) if temperature > 0 else (1 if delta_h >= 0 else 0)
+                weights.append(weight)
+                next_states.append(neighbor)
+            elif random.random() < exp(delta_h / temperature):
+
+                weight = exp(delta_h / temperature) if temperature > 0 else 0
                 weights.append(weight)
                 next_states.append(neighbor)
 
         if not next_states:
-            return None, expanded  
+            return None, expanded
 
         total_weight = sum(weights)
         if total_weight > 0:
@@ -466,16 +460,17 @@ def stochastic_hill_climbing(ban_dau, dich):
             current_state = random.choice(next_states)
 
         duong_di.append(current_state)
-        visited.add(current_state)
         new_h = manhattan_distance(current_state, dich) + linear_conflict(current_state, dich)
         if new_h == current_h:
             sideways_count += 1
         else:
             sideways_count = 0
 
-        temperature *= cooling_rate 
+        temperature *= cooling_rate
 
-    return duong_di, expanded
+    if current_state == dich:
+        return duong_di, expanded
+    return None, expanded
 
 def simulated_annealing(ban_dau, dich):
 
@@ -581,126 +576,111 @@ def repair_solvability(state):
     
     return state
 
-def genetic_algorithm(ban_dau, dich, population_size=50, max_generations=200, crossover_rate=0.7, mutation_rate=0.05):
+def genetic_algorithm(ban_dau, dich, population_size=200, max_generations=200, crossover_rate=0.8, mutation_rate=0.15):
 
     def generate_initial_population(start_state, size):
         population = []
+        paths = {}
         visited = set()
-        
         population.append(list(start_state))
+        paths[tuple(start_state)] = [start_state]
         visited.add(tuple(start_state))
-        
         while len(population) < size:
             state = list(range(9))
             random.shuffle(state)
             if is_solvable(tuple(state)):
                 if tuple(state) not in visited:
                     population.append(state)
+                    paths[tuple(state)] = [state]  
                     visited.add(tuple(state))
             else:
                 state = repair_solvability(state)
                 if tuple(state) not in visited:
                     population.append(state)
+                    paths[tuple(state)] = [state]
                     visited.add(tuple(state))
-        
-        return population[:size]
+        return population[:size], paths
 
     def fitness(state, goal):
-
         h = manhattan_distance(state, goal) + linear_conflict(state, goal)
+        return 1000.0 / (1.0 + h)  
 
     def tournament_selection(population, fitnesses, tournament_size=5):
         selected = random.sample(list(zip(population, fitnesses)), tournament_size)
         return max(selected, key=lambda x: x[1])[0]
 
-    def crossover(parent1, parent2):
+    def crossover(parent1, parent2, paths):
+        if random.random() >= crossover_rate:
+            child = parent1[:]
+            child_path = paths[tuple(parent1)][:]
+            return child, child_path
         size = len(parent1)
         crossover_point = random.randint(1, size - 1)
         child = [-1] * size
-        
-
         child[:crossover_point] = parent1[:crossover_point]
-        
         pos = crossover_point
         for val in parent2:
             if val not in child:
                 child[pos] = val
                 pos += 1
-        
         if not is_solvable(tuple(child)):
             child = repair_solvability(child)
-        
-        return child
+        child_path = paths[tuple(parent1)] + [child]
+        return child, child_path
 
-    def mutation(state):
+    def mutation(state, path, paths):
+        if random.random() >= mutation_rate:
+            return state, path
         state = state[:]
         i, j = random.sample(range(len(state)), 2)
         state[i], state[j] = state[j], state[i]
-        
         if not is_solvable(tuple(state)):
             state = repair_solvability(state)
-        
-        return state
+        new_path = path + [state]
+        return state, new_path
 
     if ban_dau == dich:
         return [ban_dau], 0
 
-    population = generate_initial_population(ban_dau, population_size)
+    population, paths = generate_initial_population(ban_dau, population_size)
     expanded = 0
-    elite_count = max(1, population_size // 10) 
+    elite_count = max(1, population_size // 10)
 
     for generation in range(max_generations):
-
         fitnesses = [fitness(state, dich) for state in population]
         expanded += len(population)
-
-        for state in population:
+        for i, state in enumerate(population):
             if tuple(state) == dich:
-                return [state], expanded
-
+                return paths[tuple(state)], expanded
         elite_indices = sorted(range(len(fitnesses)), key=lambda x: fitnesses[x], reverse=True)[:elite_count]
         new_population = [population[i][:] for i in elite_indices]
-
+        new_paths = {tuple(population[i]): paths[tuple(population[i])] for i in elite_indices}
         while len(new_population) < population_size:
-
             parent1 = tournament_selection(population, fitnesses)
             parent2 = tournament_selection(population, fitnesses)
-            
-
-            if random.random() < crossover_rate:
-                child = crossover(parent1, parent2)
-            else:
-                child = parent1[:]  
-            
-
-            if random.random() < mutation_rate:
-                child = mutation(child)
-            
+            child, child_path = crossover(parent1, parent2, paths)
+            child, child_path = mutation(child, child_path, paths)
             new_population.append(child)
-        
+            new_paths[tuple(child)] = child_path
         population = new_population[:population_size]
-    
+        paths = new_paths
 
     return None, expanded
 
-def ao_star(ban_dau, dich):
+def ao_star(ban_dau, dich, max_iterations=10000):
 
     if ban_dau == dich:
-        return [], 0
+        return [ban_dau], 0
 
     def get_action_outcomes(current_state, action):
- 
         next_states = []
-
         success_state = apply_action(current_state, action)
         if success_state:
             next_states.append(success_state)
- 
-        next_states.append(current_state)
+        next_states.append(current_state)  
         return next_states
 
     def apply_action(state, action):
-
         blank_idx = state.index(0)
         x, y = blank_idx // 3, blank_idx % 3
         dx, dy = {"MoveUp": (-1, 0), "MoveDown": (1, 0), "MoveLeft": (0, -1), "MoveRight": (0, 1)}[action]
@@ -712,65 +692,90 @@ def ao_star(ban_dau, dich):
             return tuple(new_state)
         return None
 
-    open_list = [(heuristic(ban_dau, dich), ban_dau, [], 0, [])]
-    heapq.heapify(open_list)
-    visited = set() 
-    expanded = 0
-    best_plan = {ban_dau: []}
-    best_f_cost = {ban_dau: heuristic(ban_dau, dich)}
-    labels = {}  
+    def convert_plan_to_path(plan, start_state, goal, max_steps=100):
+        """Chuyển conditional plan thành đường đi tuyến tính."""
+        path = [start_state]
+        current = start_state
+        steps = 0
+        while current != goal and steps < max_steps:
+            if not plan or isinstance(plan, str):  
+                return None
+            action = plan[0]
+            outcomes = get_action_outcomes(current, action)
+            for outcome in outcomes:
+                for subplan in plan[1]:
+                    if subplan["state"] == outcome:
+                        next_state = outcome
+                        path.append(next_state)
+                        current = next_state
+                        plan = subplan["plan"]
+                        break
+                else:
+                    continue
+                break
+            else:
+                return None
+            steps += 1
+        if current == goal:
+            return path
+        return None
 
     actions = ["MoveUp", "MoveDown", "MoveLeft", "MoveRight"]
+    open_list = [(heuristic(ban_dau, dich), ban_dau, [], 0, [ban_dau])]
+    heapq.heapify(open_list)
+    best_plan = {ban_dau: []}
+    best_f_cost = {ban_dau: heuristic(ban_dau, dich)}
+    labels = {}
+    expanded = 0
+    iteration = 0
 
-    while open_list:
+    while open_list and iteration < max_iterations:
         f_cost, current_state, plan, g_cost, path = heapq.heappop(open_list)
         expanded += 1
+        iteration += 1
 
         if current_state == dich:
-            return plan, expanded
+            path = convert_plan_to_path(plan, ban_dau, dich)
+            if path:
+                return path, expanded
+            return [ban_dau, dich], expanded  # Đường đi tối thiểu nếu plan rỗng
 
-
-        if current_state in path:
+        if current_state in path[:-1]:  # Kiểm tra chu kỳ trên đường đi
             continue
 
-        visited.add(current_state)
-
         for action in actions:
-
             outcomes = get_action_outcomes(current_state, action)
             subplans = []
+            max_subplan_f_cost = 0
             all_failed = True
 
             for next_state in outcomes:
-                if next_state in visited and next_state != current_state:
-                    continue
-
                 new_g_cost = g_cost + 1
                 h_cost = heuristic(next_state, dich)
                 new_f_cost = new_g_cost + h_cost
 
-                if next_state in path:
+                if next_state in path[:-1]:
                     label = f"L{len(labels) + 1}"
                     labels[label] = next_state
                     subplan = [label]
                 else:
-
                     subplan = best_plan.get(next_state, [])
+                    # Khám phá trạng thái mới ngay cả khi chưa có subplan
                     if not subplan and next_state != dich:
-                        continue
+                        subplan = []
 
                 subplans.append({"state": next_state, "plan": subplan})
+                max_subplan_f_cost = max(max_subplan_f_cost, new_f_cost)
                 all_failed = False
 
             if not all_failed:
-
                 new_plan = [action, subplans]
-                if current_state not in best_plan or new_f_cost < best_f_cost[current_state]:
+                if current_state not in best_plan or max_subplan_f_cost < best_f_cost[current_state]:
                     best_plan[current_state] = new_plan
-                    best_f_cost[current_state] = new_f_cost
-                    heapq.heappush(open_list, (new_f_cost, current_state, new_plan, new_g_cost, path + [current_state]))
+                    best_f_cost[current_state] = max_subplan_f_cost
+                    heapq.heappush(open_list, (max_subplan_f_cost, current_state, new_plan, new_g_cost, path + [current_state]))
 
-    return None, expanded
+    return None, expanded  
 
 def heuristic(state, goal):
     return manhattan_distance(state, goal) + linear_conflict(state, goal)
@@ -887,123 +892,129 @@ def trust_based_search_partial(ban_dau, dich):
 
 from collections import deque
 
-def backtracking_csp(ban_dau, dich):
+def backtracking_csp(ban_dau, dich, max_steps=50):
 
+    variables = list(range(9))
+    domain = {var: list(range(9)) for var in variables}
+    assignment = {}
+    goal = {i: dich[i] for i in range(9)}
+    expanded = [0]
 
-    variables = list(range(9))  
-    domain = {var: list(range(9)) for var in variables}  
-    assignment = {} 
-    goal = {i: dich[i] for i in range(9)}  
-    expanded = [0]  
+    def is_solvable_state(state):
+
+        inversion_count = 0
+        state_list = [x for x in state if x != 0]
+        for i in range(len(state_list)):
+            for j in range(i + 1, len(state_list)):
+                if state_list[i] > state_list[j]:
+                    inversion_count += 1
+        return inversion_count % 2 == 0
 
     def is_consistent(var, value, assignment, current_state):
-
         for assigned_var, assigned_value in assignment.items():
             if assigned_var != var and assigned_value == value:
                 return False
-
         temp_state = list(current_state)
         temp_state[var] = value
+        return is_solvable_state(temp_state) 
 
-        return is_reachable_from_initial(temp_state, ban_dau)
-
-    def is_reachable_from_initial(state, initial):
-        state_tuple = tuple(state)
-        queue = deque([(initial, [])])
-        visited = {tuple(initial)}
-        max_steps = 10 
-        steps = 0
-        while queue and steps < max_steps:
-            current, _ = queue.popleft()
-            if tuple(current) == state_tuple:
-                return True
-            for next_state in get_next_states(tuple(current)):
-                if next_state not in visited:
-                    visited.add(next_state)
-                    queue.append((list(next_state), []))
-            steps += 1
-        return False
-
-    def select_unassigned_variable(assignment, variables):
+    def select_unassigned_variable(assignment, variables, current_state):
         unassigned = [var for var in variables if var not in assignment]
         if not unassigned:
             return None
 
         for var in unassigned:
-            if ban_dau[var] == 0:
+            if current_state[var] == 0:
                 return var
+        return max(unassigned, key=lambda var: abs(var // 3 - goal[var] // 3) + abs(var % 3 - goal[var] % 3))
 
-        return min(unassigned, key=lambda var: len(domain[var]))
-
-    def order_domain_values(var, assignment):
-
+    def order_domain_values(var, assignment, current_state):
         values = domain[var]
         if not values:
             return []
 
-        goal_value = goal[var]
-        if goal_value in values:
-            values = [goal_value] + [v for v in values if v != goal_value]
-        return values
+        return sorted(values, key=lambda val: abs(var // 3 - goal.get(val, var) // 3) + abs(var % 3 - goal.get(val, var) % 3))
 
-    def inference(var, value, assignment):
+    def arc_consistency(variables, domain, assignment):
+        queue = [(var1, var2) for var1 in variables for var2 in variables if var1 != var2 and var2 not in assignment]
+        while queue:
+            var1, var2 = queue.pop(0)
+            if var1 not in assignment and var2 not in assignment:
+                removed = False
+                for val in domain[var1][:]:
+                    if not any(val != v for v in domain[var2]):
+                        domain[var1].remove(val)
+                        removed = True
+                if removed:
+                    if not domain[var1]:
+                        return False
+                    for var3 in variables:
+                        if var3 != var1 and var3 != var2 and var3 not in assignment:
+                            queue.append((var3, var1))
+        return True
 
+    def inference(var, value, assignment, variables, domain):
         inferences = {}
         for other_var in variables:
             if other_var != var and other_var not in assignment:
- 
                 if value in domain[other_var]:
                     inferences[other_var] = domain[other_var].copy()
                     domain[other_var].remove(value)
                     if not domain[other_var]:
-                        return None  
+                        return None
+
+        if not arc_consistency(variables, domain, assignment):
+            return None
         return inferences
 
+    def reconstruct_path(start, end, max_steps=50):
+        if start == end:
+            return [start]
+        queue = deque([(start, [start])])
+        visited = {start}
+        steps = 0
+        while queue and steps < max_steps:
+            current, path = queue.popleft()
+            for next_state in get_next_states(current):
+                if next_state not in visited:
+                    if next_state == end:
+                        return path + [next_state]
+                    visited.add(next_state)
+                    queue.append((next_state, path + [next_state]))
+            steps += 1
+        return None
+
     def backtrack(assignment, current_state):
-
         expanded[0] += 1
-
         if len(assignment) == len(variables):
             state = tuple(assignment.get(i, current_state[i]) for i in range(9))
             if state == dich:
+                return [state], expanded[0]
 
-                path = [ban_dau]
-                current = list(ban_dau)
-                while current != list(state):
-                    for next_state in get_next_states(tuple(current)):
-                        if all(next_state[i] == state[i] for i in range(9) if i in assignment):
-                            path.append(next_state)
-                            current = list(next_state)
-                            break
+            path = reconstruct_path(ban_dau, state, max_steps)
+            if path:
                 return path, expanded[0]
             return None, expanded[0]
-
-
-        var = select_unassigned_variable(assignment, variables)
+        var = select_unassigned_variable(assignment, variables, current_state)
         if var is None:
             return None, expanded[0]
-
-        for value in order_domain_values(var, assignment):
+        for value in order_domain_values(var, assignment, current_state):
             if is_consistent(var, value, assignment, current_state):
                 assignment[var] = value
-                inferences = inference(var, value, assignment)
+                inferences = inference(var, value, assignment, variables, domain)
                 if inferences is not None:
-
                     for inf_var, inf_values in inferences.items():
                         domain[inf_var] = inf_values
- 
                     new_state = list(current_state)
                     new_state[var] = value
                     result, exp = backtrack(assignment, new_state)
                     if result is not None:
                         return result, exp
-   
                     for inf_var in inferences:
                         domain[inf_var] = inferences[inf_var][:]
-       
                 del assignment[var]
-
         return None, expanded[0]
+
     result, exp = backtrack({}, ban_dau)
     return result, exp
 
