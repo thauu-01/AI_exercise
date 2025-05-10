@@ -4,12 +4,22 @@
 
 ## 🎯 Mục tiêu
       
-   Xây dựng một chương trình giải bài toán 8-Puzzle sử dụng nhiều thuật toán tìm kiếm trong lĩnh vực Trí tuệ nhân tạo (AI). Chương trình cung cấp giao diện đồ họa (GUI) trực quan để nhập trạng thái ban đầu, hiển thị quá trình giải và so sánh hiệu suất của các thuật toán. Các thuật toán được triển khai bao gồm tìm kiếm không có thông tin, tìm kiếm có thông tin, và các phương pháp tối ưu hóa cục bộ, cùng với một số thuật toán đặc biệt.
+   Xây dựng một chương trình giải bài toán 8-Puzzle sử dụng nhiều thuật toán tìm kiếm trong lĩnh vực Trí tuệ nhân tạo (AI). Chương trình cung cấp giao diện đồ họa (GUI) trực quan để nhập trạng thái ban đầu, hiển thị quá trình giải và so sánh hiệu suất của các thuật toán. Các thuật toán được triển khai bao gồm tìm kiếm không có thông tin, tìm kiếm có thông tin, tìm kiếm ràng buộc, tìm kiếm cục bộ, tìm kiếm trong môi trường không xác định, tìm kiếm ràng buộc cùng với một số thuật toán đặc biệt.
      
 ---
 
-## 🧠 Các thuật toán được triển khai
-Dưới đây là danh sách các thuật toán được triển khai trong chương trình, kèm theo mô tả chi tiết và minh họa (khi có sẵn). Mỗi thuật toán được thiết kế để tìm đường đi từ trạng thái ban đầu đến trạng thái mục tiêu (1, 2, 3, 4, 5, 6, 7, 8, 0).
+## 🧠 Nội dung
+### ✏️ Các thành phần của bài toán 8-Puzzle
+- **State space**: Tập hợp các hoán vị của 9 ô (9!/2 trạng thái khả thi do kiểm tra tính khả thi).
+- **Actions**: Di chuyển ô trống (lên, xuống, trái, phải).
+- **Transition model**: Hoán đổi ô trống với ô lân cận, tạo trạng thái mới.
+- **Goal test**: Trạng thái bằng `(1, 2, 3, 4, 5, 6, 7, 8, 0)`.
+- **Path cost**: Mỗi bước di chuyển có chi phí 1.
+- **Solution**: Đường đi từ trạng thái ban đầu đến trạng thái mục tiêu, biểu diễn bằng danh sách các trạng thái.
+- **Heuristic** : Khoảng cách Manhattan + Linear Conflict để ước lượng chi phí .
+  
+### 2.1. Các thuật toán tìm kiếm không có thông tin
+#### Thuật toán và mô tả
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
@@ -17,25 +27,118 @@ Dưới đây là danh sách các thuật toán được triển khai trong chư
 | **Depth-First Search (DFS)**   | Tìm kiếm theo chiều sâu, sử dụng ngăn xếp (stack) để khám phá nhánh sâu nhất trước khi quay lại. Không đảm bảo đường đi ngắn nhất và có thể dẫn đến vòng lặp nếu không kiểm soát.             |          ![DFS](gif/dfs.gif)            |
 | **Uniform Cost Search (UCS)**  | Tìm kiếm chi phí đồng nhất, sử dụng hàng đợi ưu tiên (priority queue) để ưu tiên trạng thái có chi phí đường đi từ gốc thấp nhất. Đảm bảo đường đi tối ưu khi chi phí di chuyển giữa các trạng thái bằng nhau.        |   ![UCS](gif/ucs.gif)                  |
 | **Iterative Deepening DFS (IDDFS)** | Kết hợp ưu điểm của DFS và BFS, thực hiện DFS với giới hạn độ sâu tăng dần qua từng vòng lặp. Tiết kiệm bộ nhớ hơn BFS và đảm bảo đường đi ngắn nhất.            |   ![IDDFS](gif/iddfs.gif)              |
-| **Greedy Best-First Search**   | Tìm kiếm tham lam, sử dụng hàng đợi ưu tiên để chọn trạng thái có giá trị heuristic (khoảng cách Manhattan) nhỏ nhất mà không xét chi phí từ gốc. Nhanh nhưng không đảm bảo tối ưu.          | ![Greedy](gif/greedy.gif)               |
+
+
+#### So sánh hiệu suất và nhận xét
+1.	  DFS (Depth-First Search):
+	  
+•	Ưu điểm: Tiết kiệm bộ nhớ nhờ chỉ khám phá một nhánh tại một thời điểm (mở rộng 7298 trạng thái) và có thời gian thực thi nhanh (0.382s).
+
+•	Nhược điểm: Không đảm bảo đường đi ngắn nhất (7112 bước), dễ bị kẹt trong nhánh sâu hoặc vòng lặp nếu không kiểm soát độ sâu.
+
+2.	 BFS (Breadth-First Search):
+
+•	Ưu điểm: Đảm bảo đường đi ngắn nhất (24 bước), phù hợp với bài toán cần giải pháp tối ưu về số bước.
+
+•	Nhược điểm: Tốn nhiều bộ nhớ do mở rộng 118151 trạng thái và thời gian thực thi hơi cao (0.402s).
+
+3.	  UCS (Uniform Cost Search):
+ 
+•	Ưu điểm: Đảm bảo đường đi ngắn nhất (24 bước) và tối ưu về chi phí khi chi phí di chuyển bằng nhau.
+
+•	Nhược điểm: Mở rộng nhiều trạng thái hơn BFS (140087) và thời gian thực thi cao hơn (0.577s) do quản lý hàng đợi ưu tiên.
+
+4.	  IDDFS (Iterative Deepening Depth-First Search):
+	 
+•	Ưu điểm: Đảm bảo đường đi ngắn nhất (24 bước) và kết hợp ưu điểm của BFS (tối ưu về số bước) với DFS (tiết kiệm bộ nhớ tương đối).
+
+•	Nhược điểm: Mở rộng rất nhiều trạng thái (429283) và thời gian thực thi dài (9.995s) do lặp lại tìm kiếm với các giới hạn độ sâu.
+
+#### Nhận xét
+
+•      Hiệu suất tối ưu về số bước: BFS, UCS, và IDDFS đều tìm được đường đi ngắn nhất (24 bước), trong khi DFS với đường đi rất dài (7112 bước). 
+
+•      Hiệu suất về bộ nhớ và tốc độ: DFS là lựa chọn tốt nhất khi bộ nhớ hạn chế và thời gian thực thi quan trọng (0.382s, 7298 trạng thái). BFS và UCS cân bằng giữa số bước tối ưu và thời gian thực thi hợp lý, nhưng UCS mở rộng nhiều trạng thái hơn một chút. IDDFS, mặc dù đảm bảo giải pháp tối ưu, lại tiêu tốn nhiều tài nguyên nhất (9.995s, 429283 trạng thái).
+
+### 2.2. Các thuật toán tìm kiếm có thông tin
+#### Thuật toán và mô tả
+
+| Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
+|--------------------------|----------------------------------------------------------------------|-------------------------------------------|
+| **Greedy Search**   | Tìm kiếm tham lam, sử dụng hàng đợi ưu tiên để chọn trạng thái có giá trị heuristic (khoảng cách Manhattan) nhỏ nhất mà không xét chi phí từ gốc. Nhanh nhưng không đảm bảo tối ưu.          | ![Greedy](gif/greedy.gif)               |
 | **A* Search**                 | Tìm kiếm tối ưu, kết hợp chi phí từ gốc (g) và giá trị heuristic (h = Manhattan + Linear Conflict). Đảm bảo đường đi ngắn nhất nếu heuristic thỏa mãn tính chất đơn điệu (monotonic).       | ![A*](gif/a_star.gif)                |
 | **IDA* Search**               | Biến thể của A*, sử dụng tìm kiếm theo chiều sâu với ngưỡng heuristic tăng dần. Tiết kiệm bộ nhớ hơn A* nhưng có thể lặp lại việc khám phá trạng thái.               | ![IDA*](gif/ida_star.gif)               |
+
+#### So sánh hiệu suất và nhận xét
+1.	Greedy Best-First Search:
+2.	
+•	Ưu điểm: Rất nhanh (0.001s) và mở rộng ít trạng thái nhất (33), nhờ chỉ tập trung vào trạng thái có giá trị heuristic thấp nhất.
+
+•	Nhược điểm: Không đảm bảo đường đi tối ưu trong các trường hợp phức tạp hơn, vì không tính chi phí đường đi (g). Trong trường hợp này, Greedy tìm được đường đi 24 bước nhờ heuristic hiệu quả (Manhattan + Linear Conflict).
+
+2.	A Search*:
+   
+•	Ưu điểm: Đảm bảo đường đi tối ưu (24 bước) nhờ kết hợp chi phí đường đi (g) và heuristic (h). Heuristic đơn điệu (Manhattan + Linear Conflict) giúp A* định hướng tốt.
+
+•	Nhược điểm: Tốn nhiều bộ nhớ và thời gian hơn (0.013s, 1560 trạng thái) do phải quản lý hàng đợi ưu tiên và mở rộng nhiều trạng thái để đảm bảo tính tối ưu.
+
+3.	IDA Search*:
+   
+•	Ưu điểm: Đảm bảo đường đi tối ưu (24 bước) với số trạng thái mở rộng thấp hơn A* (167) và thời gian nhanh (0.002s). IDA* tiết kiệm bộ nhớ bằng cách sử dụng chiến lược lặp sâu với ngưỡng chi phí.
+
+•	Nhược điểm: Có thể lặp lại việc khám phá một số trạng thái, làm tăng chi phí tính toán trong các trường hợp phức tạp hơn.
+
+
+
+
+#### Nhận xét
+•      Hiệu suất tối ưu về số bước: BFS, UCS, và IDDFS đều tìm được đường đi ngắn nhất (24 bước), trong khi DFS với đường đi rất dài (7112 bước). 
+
+•      Hiệu suất về bộ nhớ và tốc độ: DFS là lựa chọn tốt nhất khi bộ nhớ hạn chế và thời gian thực thi quan trọng (0.382s, 7298 trạng thái). BFS và UCS cân bằng giữa số bước tối ưu và thời gian thực thi hợp lý, nhưng UCS mở rộng nhiều trạng thái hơn một chút. IDDFS, mặc dù đảm bảo giải pháp tối ưu, lại tiêu tốn nhiều tài nguyên nhất (9.995s, 429283 trạng thái).
+
+### 2.3. Các thuật toán tìm kiếm cục bộ
+#### Thuật toán và mô tả
+
+
+| Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
+|--------------------------|----------------------------------------------------------------------|-------------------------------------------|
 | **Simple Hill Climbing**       | Tìm kiếm leo đồi đơn giản, chọn trạng thái láng giềng ngẫu nhiên tốt hơn trạng thái hiện tại dựa trên heuristic (Manhattan + Linear Conflict). Dễ bị kẹt ở cực trị cục bộ.                    |     |
 | **Steepest Hill Climbing**     | Tìm kiếm leo đồi dốc nhất, xem xét tất cả trạng thái láng giềng và chọn trạng thái có heuristic tốt nhất. Vẫn có nguy cơ kẹt ở cực trị cục bộ nhưng cải thiện hơn Simple Hill Climbing.    |![Steepest Hill](gif/steepest_hill.gif)  |
 | **Stochastic Hill Climbing**   | Tìm kiếm leo đồi ngẫu nhiên, chọn trạng thái láng giềng ngẫu nhiên nhưng ưu tiên trạng thái tốt hơn dựa trên xác suất. Giúp thoát khỏi cực trị cục bộ nhờ yếu tố ngẫu nhiên.           | ![Stochastic Hill](gif/stochastic_hill.gif) |
 | **Simulated Annealing**        | Mô phỏng ủ nhiệt, chấp nhận cả trạng thái xấu hơn với xác suất giảm dần theo "nhiệt độ". Nhiệt độ giảm theo thời gian (cooling rate), giúp thoát khỏi cực trị cục bộ và tìm giải pháp toàn cục.    | ![Simulated Annealing](gif/simulated_annealing.gif)   |
 | **Beam Search**                | Tìm kiếm chùm, giữ một số lượng trạng thái giới hạn (beam width) ở mỗi mức, kết hợp giữa BFS và tính tham lam. Có thể bỏ sót giải pháp tối ưu nếu beam width nhỏ.   | ![Beam Search](gif/beam.gif)     |
 | **Genetic Algorithm**                | Thuật toán di truyền, sử dụng quần thể các trạng thái, thực hiện các phép lai ghép (crossover) và đột biến (mutation) để tiến hóa đến trạng thái mục tiêu. Phù hợp với không gian trạng thái phức tạp.   | ![Genetic Algorithm](gif/genetic.gif)     |
+
+
+### 2.4. Các thuật toán tìm kiếm trong môi trường không xác định
+#### Thuật toán và mô tả
+
+| Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
+|--------------------------|----------------------------------------------------------------------|-------------------------------------------|
 | **AO Search***                | Tìm kiếm AND-OR, xây dựng kế hoạch dựa trên các hành động và kết quả có thể xảy ra. Phù hợp với các bài toán có tính không chắc chắn, sử dụng heuristic để định hướng.   |      |
 | **Trust-Based Search**                | Tìm kiếm dựa trên niềm tin, kết hợp heuristic với yếu tố niềm tin (belief factor) dựa trên lịch sử trạng thái. Tăng khả năng ưu tiên các trạng thái gần giải pháp.   | ![Trust-Based Search](gif/trust_search.gif)      |
 | **Trust-Based Search (Partial)**                | Biến thể của Trust-Based Search, giả định chỉ biết một phần thông tin mục tiêu (ví dụ: hàng đầu tiên). Sử dụng niềm tin và heuristic để định hướng, chuyển sang A* khi đạt mục tiêu cục bộ.   |  ![Trust-Based Search (Partial)](gif/trust_partial.gif)     |
-| **Backtracking CSP**                | Tìm kiếm quay lui dựa trên bài toán thỏa mãn ràng buộc (CSP), gán giá trị cho các ô trên bảng và kiểm tra tính hợp lệ (độ khả thi và khả năng đạt từ trạng thái ban đầu).   |   ![Backtracking CSP](gif/backtracking.gif)     |
-
-
 
 ## 📝 Chi tiết bổ sung về các thuật toán
 
+### 2.5. Các thuật toán tìm kiếm có ràng buộc
+#### Thuật toán và mô tả
 
+
+
+| Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
+|--------------------------|----------------------------------------------------------------------|-------------------------------------------|
+| **Backtracking CSP**                | Tìm kiếm quay lui dựa trên bài toán thỏa mãn ràng buộc (CSP), gán giá trị cho các ô trên bảng và kiểm tra tính hợp lệ (độ khả thi và khả năng đạt từ trạng thái ban đầu).   |   ![Backtracking CSP](gif/backtracking.gif)     |
+
+### 2.6. Các thuật toán
+#### Thuật toán và mô tả
+
+| Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
+|--------------------------|----------------------------------------------------------------------|-------------------------------------------|
+| **Backtracking CSP**                | Tìm kiếm quay lui dựa trên bài toán thỏa mãn ràng buộc (CSP), gán giá trị cho các ô trên bảng và kiểm tra tính hợp lệ (độ khả thi và khả năng đạt từ trạng thái ban đầu).   |   ![Backtracking CSP](gif/backtracking.gif)     |
+
+
+## 📝 Chi tiết bổ sung về các thuật toán
 .  Breadth-First Search (BFS):
    
     •	Ưu điểm: Đảm bảo tìm được đường đi ngắn nhất trong không gian trạng thái không trọng số.
