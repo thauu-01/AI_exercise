@@ -329,36 +329,61 @@ def ida_star(ban_dau, dich):
             return None, total_expanded
         threshold = new_threshold
 
-def simple_hill_climbing(ban_dau, dich):
+def simple_hill_climbing(ban_dau, dich, max_sideways=100, max_restarts=5, random_walk_steps=5, explore_prob=0.1):
     if ban_dau == dich:
         return [ban_dau], 0
 
-    solution = [ban_dau]
-    current_state = ban_dau
-    current_score = manhattan_distance(current_state, dich)
-    expanded = 1
+    total_expanded = 0
+    for restart in range(max_restarts + 1):
+        solution = [ban_dau]
+        current_state = ban_dau
+        
+        if restart > 0:
+            for _ in range(random_walk_steps):
+                neighbors = get_next_states(current_state)
+                if not neighbors:
+                    break
+                current_state = random.choice(neighbors)
+                solution.append(current_state)
+                total_expanded += 1
+        
+        current_score = manhattan_distance(current_state, dich) + linear_conflict(current_state, dich)
+        sideways_count = 0
 
-    while True:
-        if current_state == dich:
-            return solution, expanded
+        while True:
+            if current_state == dich:
+                return solution, total_expanded
 
-        neighbors = get_next_states(current_state)
-        best_move = None
-        best_score = current_score
+            neighbors = get_next_states(current_state)
+            best_move = None
+            best_score = float('inf')
+            sideways_moves = []
 
-        for neighbor in neighbors:
-            expanded += 1
-            score = manhattan_distance(neighbor, dich)
-            if score < best_score:
-                best_score = score
-                best_move = neighbor
+            for neighbor in neighbors:
+                total_expanded += 1
+                score = manhattan_distance(neighbor, dich) + linear_conflict(neighbor, dich)
+                if score < best_score:
+                    best_score = score
+                    best_move = neighbor
+                    sideways_moves = []
+                elif score == current_score and sideways_count < max_sideways:
+                    sideways_moves.append(neighbor)
 
-        if best_move is None or best_score >= current_score:
-            return None, expanded
+            if random.random() < explore_prob and neighbors:
+                best_move = random.choice(neighbors)
+                best_score = manhattan_distance(best_move, dich) + linear_conflict(best_move, dich)
+            elif best_move is None:
+                if sideways_moves and sideways_count < max_sideways:
+                    best_move = random.choice(sideways_moves)
+                    sideways_count += 1
+                else:
+                    break
 
-        current_state = best_move
-        current_score = best_score
-        solution.append(current_state)
+            current_state = best_move
+            current_score = best_score
+            solution.append(current_state)
+
+    return None, total_expanded
 
 def steepest_ascent_hill_climbing(ban_dau, dich):
 
