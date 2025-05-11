@@ -32,33 +32,33 @@
 #### So sánh hiệu suất và nhận xét
 1.	  DFS (Depth-First Search):
 	  
-•	Ưu điểm: Tiết kiệm bộ nhớ nhờ chỉ khám phá một nhánh tại một thời điểm (mở rộng 7298 trạng thái) và có thời gian thực thi nhanh (0.382s).
+•	Ưu điểm: Tiết kiệm bộ nhớ nhờ chỉ khám phá một nhánh tại một thời điểm  và có thời gian thực thi nhanh .
 
-•	Nhược điểm: Không đảm bảo đường đi ngắn nhất (7112 bước), dễ bị kẹt trong nhánh sâu hoặc vòng lặp nếu không kiểm soát độ sâu.
+•	Nhược điểm: Không đảm bảo đường đi ngắn nhất , dễ bị kẹt trong nhánh sâu hoặc vòng lặp nếu không kiểm soát độ sâu.
 
 2.	 BFS (Breadth-First Search):
 
-•	Ưu điểm: Đảm bảo đường đi ngắn nhất (24 bước), phù hợp với bài toán cần giải pháp tối ưu về số bước.
+•	Ưu điểm: Đảm bảo đường đi ngắn nhất, phù hợp với bài toán cần giải pháp tối ưu về số bước.
 
-•	Nhược điểm: Tốn nhiều bộ nhớ do mở rộng 118151 trạng thái và thời gian thực thi hơi cao (0.402s).
+•	Nhược điểm: Tốn nhiều bộ nhớ do mở rộng trạng thái và thời gian thực thi hơi cao .
 
 3.	  UCS (Uniform Cost Search):
  
-•	Ưu điểm: Đảm bảo đường đi ngắn nhất (24 bước) và tối ưu về chi phí khi chi phí di chuyển bằng nhau.
+•	Ưu điểm: Đảm bảo đường đi ngắn nhất  và tối ưu về chi phí khi chi phí di chuyển bằng nhau.
 
-•	Nhược điểm: Mở rộng nhiều trạng thái hơn BFS (140087) và thời gian thực thi cao hơn (0.577s) do quản lý hàng đợi ưu tiên.
+•	Nhược điểm: Mở rộng nhiều trạng thái hơn BFS và thời gian thực thi cao hơn do quản lý hàng đợi ưu tiên.
 
 4.	  IDDFS (Iterative Deepening Depth-First Search):
 	 
-•	Ưu điểm: Đảm bảo đường đi ngắn nhất (24 bước) và kết hợp ưu điểm của BFS (tối ưu về số bước) với DFS (tiết kiệm bộ nhớ tương đối).
+•	Ưu điểm: Đảm bảo đường đi ngắn nhất và kết hợp ưu điểm của BFS với DFS .
 
-•	Nhược điểm: Mở rộng rất nhiều trạng thái (429283) và thời gian thực thi dài (9.995s) do lặp lại tìm kiếm với các giới hạn độ sâu.
+•	Nhược điểm: Mở rộng rất nhiều trạng thái  và thời gian thực thi dài do lặp lại tìm kiếm với các giới hạn độ sâu.
 
 #### Nhận xét
 
-•      Hiệu suất tối ưu về số bước: BFS, UCS, và IDDFS đều tìm được đường đi ngắn nhất (24 bước), trong khi DFS với đường đi rất dài (7112 bước). 
+•      Hiệu suất tối ưu về số bước: BFS, UCS, và IDDFS đều tìm được đường đi ngắn nhất , trong khi DFS với đường đi rất dài . 
 
-•      Hiệu suất về bộ nhớ và tốc độ: DFS là lựa chọn tốt nhất khi bộ nhớ hạn chế và thời gian thực thi quan trọng (0.382s, 7298 trạng thái). BFS và UCS cân bằng giữa số bước tối ưu và thời gian thực thi hợp lý, nhưng UCS mở rộng nhiều trạng thái hơn một chút. IDDFS, mặc dù đảm bảo giải pháp tối ưu, lại tiêu tốn nhiều tài nguyên nhất (9.995s, 429283 trạng thái).
+•      Hiệu suất về bộ nhớ và tốc độ: DFS là lựa chọn tốt nhất khi bộ nhớ hạn chế và thời gian thực thi quan trọng . BFS và UCS cân bằng giữa số bước tối ưu và thời gian thực thi hợp lý, nhưng UCS mở rộng nhiều trạng thái hơn một chút. IDDFS, mặc dù đảm bảo giải pháp tối ưu, lại tiêu tốn nhiều tài nguyên nhất .
 
 ### 2.2. Các thuật toán tìm kiếm có thông tin
 #### Thuật toán và mô tả
@@ -72,37 +72,35 @@
 #### So sánh hiệu suất và nhận xét
 1.	Greedy Best-First Search:
 	
-•	Ưu điểm: Rất nhanh (0.001s) và mở rộng ít trạng thái nhất (33), nhờ chỉ tập trung vào trạng thái có giá trị heuristic thấp nhất tại mỗi bước(24 bước).
+•	Ưu điểm: Rất nhanh và mở rộng ít trạng thái nhất , nhờ chỉ tập trung vào trạng thái có giá trị heuristic thấp nhất tại mỗi bước.
 
 •	Nhược điểm: Không đảm bảo tính tối ưu trong mọi tình huống, vì chỉ dựa vào heuristic (h) mà không tính chi phí đường đi (g). 
 
 2.	A Search*:
    
-•	Ưu điểm: Đảm bảo đường đi tối ưu (24 bước) nhờ kết hợp chi phí đường đi (g) và heuristic (h). Heuristic đơn điệu (Manhattan + Linear Conflict) giúp A* định hướng tốt.
+•	Ưu điểm: Đảm bảo đường đi tối ưu nhờ kết hợp chi phí đường đi (g) và heuristic (h). Heuristic đơn điệu (Manhattan + Linear Conflict) giúp A* định hướng tốt.
 
-•	Nhược điểm: Tốn nhiều bộ nhớ và thời gian hơn (0.013s, 1560 trạng thái) do phải quản lý hàng đợi ưu tiên và mở rộng nhiều trạng thái để đảm bảo tính tối ưu.
+•	Nhược điểm: Tốn nhiều bộ nhớ và thời gian hơn do phải quản lý hàng đợi ưu tiên và mở rộng nhiều trạng thái để đảm bảo tính tối ưu.
 
 3.	IDA Search*:
    
-•	Ưu điểm: Đảm bảo đường đi tối ưu (24 bước) với số trạng thái mở rộng thấp hơn A* (167) và thời gian nhanh (0.002s). IDA* tiết kiệm bộ nhớ bằng cách sử dụng chiến lược lặp sâu với ngưỡng chi phí.
+•	Ưu điểm: Đảm bảo đường đi tối ưu với số trạng thái mở rộng thấp hơn A* và thời gian nhanh. IDA* tiết kiệm bộ nhớ bằng cách sử dụng chiến lược lặp sâu với ngưỡng chi phí.
 
 •	Nhược điểm: Có thể lặp lại việc khám phá một số trạng thái, làm tăng chi phí tính toán trong các trường hợp phức tạp hơn.
 
 #### Nhận xét
 
-•      Hiệu suất tối ưu về số bước: Cả Greedy, A*, và IDA* đều tìm được đường đi tối ưu (24 bước) trong trường hợp này. Tuy nhiên, A* và IDA* đảm bảo tính tối ưu trong mọi trường hợp nhờ sử dụng f = g + h, trong khi Greedy chỉ đạt được nhờ heuristic hiệu quả. ớc). 
+•      Hiệu suất tối ưu về số bước: Cả Greedy, A*, và IDA* đều tìm được đường đi tối ưu trong trường hợp này. Tuy nhiên, A* và IDA* đảm bảo tính tối ưu trong mọi trường hợp nhờ sử dụng f = g + h, trong khi Greedy chỉ đạt được nhờ heuristic hiệu quả. 
 
 •      Hiệu suất về bộ nhớ và tốc độ: 
 
-	•	Greedy vượt trội về tốc độ (0.001s) và số trạng thái mở rộng (33), nhưng không đáng tin cậy về tính tối ưu trong các trường hợp phức tạp.
-	•	IDA* cân bằng tốt giữa tốc độ (0.002s), số trạng thái mở rộng (167), và tính tối ưu, là lựa chọn hiệu quả khi bộ nhớ hạn chế.
-	•	A* tốn nhiều tài nguyên hơn (0.013s, 1560 trạng thái) nhưng đảm bảo giải pháp tối ưu, phù hợp khi tài nguyên không bị giới hạn.
+	•	Greedy vượt trội về tốc độ và số trạng thái mở rộng, nhưng không đáng tin cậy về tính tối ưu trong các trường hợp phức tạp.
+	•	IDA* cân bằng tốt giữa tốc độ, số trạng thái mở rộng, và tính tối ưu, là lựa chọn hiệu quả khi bộ nhớ hạn chế.
+	•	A* tốn nhiều tài nguyên hơn nhưng đảm bảo giải pháp tối ưu, phù hợp khi tài nguyên không bị giới hạn.
 
 
 ### 2.3. Các thuật toán tìm kiếm cục bộ
 #### Thuật toán và mô tả
-
-
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
 | **Simple Hill Climbing**       | Tìm kiếm leo đồi đơn giản, chọn trạng thái láng giềng ngẫu nhiên tốt hơn trạng thái hiện tại dựa trên heuristic (Manhattan + Linear Conflict). Dễ bị kẹt ở cực trị cục bộ.                    |     |
@@ -115,39 +113,39 @@
 #### So sánh hiệu suất 
 1.	Simple Hill Climbing: 
 
-•	Ưu điểm: Rất nhanh (~0.001s) và mở rộng ít trạng thái (10) nhờ chiến lược đơn giản.
+•	Ưu điểm: Rất nhanh và mở rộng ít trạng thái  nhờ chiến lược đơn giản.
 
 •	Nhược điểm: Dễ bị kẹt ở cực trị cục bộ, không tìm thấy giải pháp trong trường hợp này.
 
 2.	Steepest Ascent Hill Climbing: 
 
-•	Ưu điểm: Nhanh (0.003s) và mở rộng ít (40), tìm được giải pháp (40 bước) nhờ chọn trạng thái tốt nhất.
+•	Ưu điểm: Nhanh và mở rộng ít , tìm được giải pháp nhờ chọn trạng thái tốt nhất.
 
 •	Nhược điểm: Giải pháp không tối ưu và vẫn có nguy cơ kẹt ở cực trị.
 
 3.	Stochastic Hill Climbing: 
 
-•	Ưu điểm: Tìm được giải pháp (568 bước) nhờ yếu tố ngẫu nhiên giúp thoát cực trị cục bộ.
+•	Ưu điểm: Tìm được giải pháp  nhờ yếu tố ngẫu nhiên giúp thoát cực trị cục bộ.
 
-•	Nhược điểm: Số bước và thời gian dài (0.035s, 568 trạng thái), không hiệu quả về tối ưu.
+•	Nhược điểm: Số bước và thời gian dài, không hiệu quả về tối ưu.
 
 4.	Simulated Annealing: 
 
-•	Ưu điểm: Tìm được giải pháp (460 bước) với thời gian hợp lý (0.010s), khả năng thoát cực trị nhờ cơ chế làm nguội.
+•	Ưu điểm: Tìm được giải pháp với thời gian hợp lý , khả năng thoát cực trị nhờ cơ chế làm nguội.
 
-•	Nhược điểm: Giải pháp dài  và mở rộng nhiều (461) hơn Steepest Ascent.
+•	Nhược điểm: Giải pháp dài và mở rộng nhiều hơn Steepest Ascent.
 
 5.	Beam Search: 
 
-•	Ưu điểm: Tìm được giải pháp (1264 bước) với beam width = 3, duy trì khám phá đa dạng.
+•	Ưu điểm: Tìm được giải pháp với beam width tùy chọn , duy trì khám phá đa dạng.
 
-•	Nhược điểm: Số bước và thời gian dài (0.063s, 3302 trạng thái), không tối ưu.
+•	Nhược điểm: Không tối ưu.
 
 6.	Genetic Algorithm: 
 
-•	Ưu điểm: Khả năng khám phá không gian lớn (1471208 trạng thái), lý tưởng cho bài toán phức tạp.
+•	Ưu điểm: Khả năng khám phá không gian lớn , lý tưởng cho bài toán phức tạp.
 
-•	Nhược điểm: Không tìm thấy giải pháp trong giới hạn ít thế hệ, tốn nhiều thời gian (~0.1s+).
+•	Nhược điểm: Không tìm thấy giải pháp trong giới hạn ít thế hệ, tốn nhiều thời gian .
 
 
 
@@ -157,9 +155,9 @@
 
 •      Hiệu suất về bộ nhớ và tốc độ: 
 
-	•	Simple Hill Climbing và Steepest Ascent Hill Climbing tiết kiệm tài nguyên nhất (10-40 trạng thái, 0.001-0.003s), nhưng không ổn định.
-	•	Simulated Annealing cân bằng tốt giữa thời gian (0.010s) và số lần mở rộng (461).
-	•	Beam Search và Genetic Algorithm tốn nhiều tài nguyên nhất (3302 và 1471208 trạng thái), nhưng chỉ Beam Search thành công.
+	•	Simple Hill Climbing và Steepest Ascent Hill Climbing tiết kiệm tài nguyên nhất , nhưng không ổn định.
+	•	Simulated Annealing cân bằng tốt giữa thời gian và số lần mở rộng .
+	•	Beam Search và Genetic Algorithm tốn nhiều tài nguyên nhất, nhưng chỉ Beam Search thành công.
 
 
 
