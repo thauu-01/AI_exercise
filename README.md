@@ -112,7 +112,7 @@
 | **Beam Search**                | Tìm kiếm chùm, giữ một số lượng trạng thái giới hạn (beam width) ở mỗi mức, kết hợp giữa BFS và tính tham lam. Có thể bỏ sót giải pháp tối ưu nếu beam width nhỏ.   | ![Beam Search](gif/beam.gif)     |
 | **Genetic Algorithm**                | Thuật toán di truyền, sử dụng quần thể các trạng thái, thực hiện các phép lai ghép (crossover) và đột biến (mutation) để tiến hóa đến trạng thái mục tiêu. Phù hợp với không gian trạng thái phức tạp.   | ![Genetic Algorithm](gif/genetic.gif)     |
 
-#### So sánh hiệu suất và nhận xét
+#### So sánh hiệu suất 
 1.	Simple Hill Climbing: 
 
 •	Ưu điểm: Rất nhanh (~0.001s) và mở rộng ít trạng thái (10) nhờ chiến lược đơn giản.
@@ -173,6 +173,23 @@
 | **Trust-Based Search (Partial)**                | Biến thể của Trust-Based Search, giả định chỉ biết một phần thông tin mục tiêu (ví dụ: hàng đầu tiên). Sử dụng niềm tin và heuristic để định hướng, chuyển sang A* khi đạt mục tiêu cục bộ.   |  ![Trust-Based Search (Partial)](gif/trust_partial.gif)     |
 
 
+
+📝✏️ Tóm tắt các thành phần của bài toán Sudoku 6x6
+
+• State space: Tập hợp các gán giá trị 1-6 cho 36 ô, thỏa mãn ràng buộc Alldiff (hàng, cột, vùng 2x3), ước lượng 10⁶-10⁸ trạng thái khả thi.
+
+• Actions: Gán giá trị 1-6 cho ô trống, tuân theo ràng buộc không trùng lặp.
+
+• Transition model: Cập nhật trạng thái bằng cách gán giá trị, kiểm tra tính hợp lệ, từ chối nếu có xung đột.
+
+• Goal test: Bảng 6x6 hoàn chỉnh, mỗi hàng, cột, vùng 2x3 chứa duy nhất 1-6.
+
+• Path cost: Mỗi gán giá trị hợp lệ có chi phí 1, tổng bằng số ô trống.
+
+• Solution: Đường đi từ trạng thái ban đầu đến bảng hoàn chỉnh, biểu diễn bằng các bước gán giá trị.
+
+• Heuristic: MRV (ưu tiên ô ít giá trị), LCV (giá trị ít ràng buộc), AC-3 (tính nhất quán cung).
+
 ### 2.5. Các thuật toán tìm kiếm có ràng buộc
 #### Thuật toán và mô tả
 
@@ -180,14 +197,64 @@
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **Backtracking CSP**                | Tìm kiếm quay lui dựa trên bài toán thỏa mãn ràng buộc (CSP), gán giá trị cho các ô trên bảng và kiểm tra tính hợp lệ (độ khả thi và khả năng đạt từ trạng thái ban đầu).   |   ![Backtracking CSP](gif/backtracking.gif)     |
+| **AC-3**                |Là thuật toán đảm bảo tính nhất quán cung (arc consistency) trong bài toán CSP. Nó xử lý từng cung (arc) trong danh sách các ràng buộc bằng cách loại bỏ các giá trị không thể thỏa mãn từ miền giá trị (domains) của các biến. Thuật toán sử dụng một hàng đợi (queue) để xử lý các cung và lặp lại cho đến khi không còn cung nào cần sửa đổi hoặc phát hiện không có giải pháp nào.   |   ![AC-3](gif/backtracking.gif)     |
+| **Min-Conflicts**                | Là thuật toán tìm kiếm cục bộ dựa trên việc giảm thiểu xung đột (conflicts) trong bài toán CSP. Nó bắt đầu với một trạng thái ngẫu nhiên hoặc nhập liệu và lặp lại các bước thay đổi giá trị của các biến có xung đột để đạt được trạng thái không xung đột. Thuật toán chọn ngẫu nhiên một biến có xung đột và gán giá trị làm giảm số xung đột tối đa.   |   ![Min-Conflicts](gif/backtracking.gif)     |
+| **Backtracking CSP**                | Kết hợp với AC-3 để giải bài toán CSP. Backtracking khám phá không gian trạng thái theo cách đệ quy, gán giá trị cho các biến và quay lui khi phát hiện xung đột. AC-3 được sử dụng như một bước tiền xử lý để giảm miền giá trị, và trong quá trình tìm kiếm, nó thực hiện suy luận để cập nhật miền.   |   ![Backtracking CSP](gif/backtracking.gif)     |
 
-### 2.6. Các thuật toán
+
+#### So sánh hiệu suất 
+1.	AC-3: 
+
+•	Ưu điểm: Rất nhanh hiệu quả trong việc giảm miền giá trị, giúp cải thiện hiệu suất của các thuật toán tìm kiếm sau đó. Mở rộng ít trạng thái.
+
+•	Nhược điểm: Không tìm được giải pháp hoàn chỉnh, chỉ là bước tiền xử lý.
+
+2.	Min-Conflicts: 
+
+•	Ưu điểm: Tìm giải pháp nhanh  với ít trạng thái mở rộng nếu khởi tạo tốt. 
+
+•	Nhược điểm: Không đảm bảo tìm được giải pháp tối ưu, phụ thuộc vào ngẫu nhiên. Có thể thất bại nếu không gian trạng thái phức tạp.
+
+3.	Backtracking: 
+
+•	Ưu điểm: Đảm bảo tìm được giải pháp tối ưu nhờ heuristic, kết hợp AC-3 để giảm quay lui. 
+
+•	Nhược điểm: Chậm hơn và mở rộng nhiều trạng thái  do khám phá toàn bộ không gian.
+
+### 2.6. Thuật toán học tăng cường
 #### Thuật toán và mô tả
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **Backtracking CSP**                | Tìm kiếm quay lui dựa trên bài toán thỏa mãn ràng buộc (CSP), gán giá trị cho các ô trên bảng và kiểm tra tính hợp lệ (độ khả thi và khả năng đạt từ trạng thái ban đầu).   |   ![Backtracking CSP](gif/backtracking.gif)     |
+| **Q-Learning**                | Là thuật toán học tăng cường không mô hình (model-free) thuộc nhóm học giá trị (value-based), được sử dụng để tìm chính sách tối ưu trong môi trường rời rạc. Thuật toán học cách tối ưu hóa hành vi của tác nhân (agent) thông qua việc thử và sai (trial-and-error), dựa trên phần thưởng nhận được từ môi trường.   |   ![Q-Learning](gif/backtracking.gif)     |
+
+## Cơ chế chính của Q-Learning trong code:
+
+1.	Khởi tạo: 
+
+•	Bảng Q (q_table) được khởi tạo với giá trị 0 cho mỗi cặp (trạng thái, hành động). Trạng thái là các ô trên lưới 3x3 (STATES = [(i, j) for i in range(3) for j in range(3)]), và hành động là các hướng di chuyển (ACTIONS = ['up', 'down', 'left', 'right']).
+
+•	Các tham số học: alpha = 0.1 (tốc độ học), gamma = 0.9 (hệ số chiết khấu).
+
+2.	Cập nhật Q-Table: 
+
+•	Trong mỗi bước (step), tác nhân chọn một hành động ngẫu nhiên (random exploration).
+
+•	Trạng thái tiếp theo (next_state) được tính dựa trên hành động hiện tại (get_next_state).
+
+•	Phần thưởng (reward) được lấy từ môi trường (get_reward): +10 tại ô (2,2), -1 nếu ra ngoài lưới, 0 hoặc giá trị ngẫu nhiên từ lưới (self.grid).
+
+•	Cập nhật giá trị Q theo công thức: ![image](https://github.com/user-attachments/assets/75a448b3-55e8-4c08-a754-39318afe0027)
+
+3.	Lặp lại: 
+
+	Thuật toán chạy qua 10 episode, mỗi episode bắt đầu từ trạng thái (0,0) và kết thúc khi đạt ô (2,2) hoặc trạng thái không hợp lệ.
+
+•	Mỗi bước được ghi lại và hiển thị trên giao diện (nhưng không hiển thị chi tiết từng bước trong giao diện, chỉ cập nhật bảng Q).
+
+4.	Kết thúc:
+
+•	Thuật toán giả định hội tụ sau 10 episode và trả về kết quả "Optimal Policy Found!".
 
 ## 🌟 Các tính năng của chương trình
 Giao diện đồ họa (GUI): Sử dụng thư viện pygame để tạo giao diện trực quan, cho phép người dùng: 
