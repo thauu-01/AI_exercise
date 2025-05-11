@@ -115,7 +115,7 @@
 
 •	Ưu điểm: Rất nhanh và mở rộng ít trạng thái  nhờ chiến lược đơn giản.
 
-•	Nhược điểm: Dễ bị kẹt ở cực trị cục bộ, không tìm thấy giải pháp trong trường hợp này.
+•	Nhược điểm: Dễ bị kẹt ở cực trị cục bộ, không tìm thấy giải pháp trong nhiều trường hợp.
 
 2.	Steepest Ascent Hill Climbing: 
 
