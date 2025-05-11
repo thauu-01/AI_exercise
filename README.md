@@ -10,7 +10,7 @@
 
 ## 🧠 Nội dung
 ### 📝✏️ Các thành phần của bài toán 8-Puzzle
-- **State space**: Tập hợp các hoán vị của 9 ô (9!/2 trạng thái khả thi do kiểm tra tính khả thi).
+- **State space**: Tập hợp các hoán vị của 9 ô 
 - **Actions**: Di chuyển ô trống (lên, xuống, trái, phải).
 - **Transition model**: Hoán đổi ô trống với ô lân cận, tạo trạng thái mới.
 - **Goal test**: Trạng thái bằng `(1, 2, 3, 4, 5, 6, 7, 8, 0)`.
@@ -328,6 +328,10 @@ Giao diện đồ họa (GUI): Sử dụng thư viện pygame để tạo giao d
 ## 🔍 Kết luận
 Chương trình cung cấp một nền tảng toàn diện để so sánh các thuật toán AI trong bài toán 8-Puzzle. Giao diện trực quan và hỗ trợ nhiều thuật toán giúp người dùng thấy các thuật toán hoạt động. Các thuật toán như A*, IDA*, và Simulated Annealing nổi bật về hiệu suất và khả năng xử lý các trạng thái phức tạp, trong khi các phương pháp như Trust-Based Search và Backtracking CSP mang lại góc nhìn mới về cách tiếp cận bài toán.
 
+
+## 📝 Tài liệu tham khảo 
+
+* Sách tham khảo: Russell 2016 Artificial intelligence a modern approach (Artificial Intelligence A Modern Approach Third Edition Stuart J. Russell and Peter Norvig)
 
 ## 👨‍💻 Tác giả
 
