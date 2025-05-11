@@ -168,9 +168,29 @@
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **AO Search***                | Tìm kiếm AND-OR, xây dựng kế hoạch dựa trên các hành động và kết quả có thể xảy ra. Phù hợp với các bài toán có tính không chắc chắn, sử dụng heuristic để định hướng.   |      |
-| **Trust-Based Search**                | Tìm kiếm dựa trên niềm tin, kết hợp heuristic với yếu tố niềm tin (belief factor) dựa trên lịch sử trạng thái. Tăng khả năng ưu tiên các trạng thái gần giải pháp.   | ![Trust-Based Search](gif/trust_search.gif)      |
-| **Trust-Based Search (Partial)**                | Biến thể của Trust-Based Search, giả định chỉ biết một phần thông tin mục tiêu (ví dụ: hàng đầu tiên). Sử dụng niềm tin và heuristic để định hướng, chuyển sang A* khi đạt mục tiêu cục bộ.   |  ![Trust-Based Search (Partial)](gif/trust_partial.gif)     |
+| **AO Search***                | Được thiết kế để xử lý các bài toán tìm kiếm trong môi trường không xác định (non-deterministic), nơi mỗi hành động có thể dẫn đến nhiều kết quả khác nhau.   |      |
+| **Trust-Based Search**                | Thuật toán này hoạt động trong môi trường không có quan sát (non-observable), dựa trên niềm tin (belief state) và sử dụng yếu tố tin cậy (trust) để định hướng tìm kiếm.   | ![Trust-Based Search](gif/trust_search.gif)      |
+| **Trust-Based Search (Partial)**                | Thuật toán này xử lý bài toán với quan sát từng phần (partial observability), sử dụng belief state và cập nhật dựa trên các quan sát (percepts).   |  ![Trust-Based Search (Partial)](gif/trust_partial.gif)     |
+
+
+#### So sánh hiệu suất 
+1.	AND-OR Search: 
+
+•	Ưu điểm: Xử lý tốt môi trường không xác định, xây dựng kế hoạch điều kiện khả thi cho mọi trường hợp. 
+
+•	Nhược điểm: Khó tìm ra đường đi thành công
+
+2.	Trust No Observation: 
+
+•	Ưu điểm: Hiệu quả về mặt mở rộng trạng thái nhờ không phải xử lý quan sát. Yếu tố tin cậy giúp định hướng tìm kiếm.
+
+•	Nhược điểm: Đường đi dài do thiếu thông tin, không đảm bảo tối ưu. Belief state có thể lớn nếu không có cách thu hẹp.
+
+3.	Trust Partial Observation: 
+
+•	Ưu điểm: Tận dụng quan sát để thu hẹp belief state, dẫn đến đường đi ngắn hơn . Kế hoạch điều kiện đảm bảo tính khả thi, phù hợp với thông tin hạn ché.
+
+•	Nhược điểm: Số trạng thái mở rộng lớn  và thời gian chậm do chi phí tính toán belief state và cập nhật từ quan sát.
 
 
 
@@ -192,7 +212,6 @@
 
 ### 2.5. Các thuật toán tìm kiếm có ràng buộc
 #### Thuật toán và mô tả
-
 
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
