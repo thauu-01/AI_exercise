@@ -23,10 +23,10 @@
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **Breadth-First Search (BFS)** | Tìm kiếm theo chiều rộng, sử dụng hàng đợi (queue) để khám phá tất cả các trạng thái ở mức hiện tại trước khi chuyển sang mức sâu hơn. Đảm bảo tìm được đường đi ngắn nhất nhưng tốn bộ nhớ khi không gian trạng thái lớn.    | ![BFS](gif/bfs.gif)                     |
-| **Depth-First Search (DFS)**   | Tìm kiếm theo chiều sâu, sử dụng ngăn xếp (stack) để khám phá nhánh sâu nhất trước khi quay lại. Không đảm bảo đường đi ngắn nhất và có thể dẫn đến vòng lặp nếu không kiểm soát.             |          ![DFS](gif/dfs.gif)            |
-| **Uniform Cost Search (UCS)**  | Tìm kiếm chi phí đồng nhất, sử dụng hàng đợi ưu tiên (priority queue) để ưu tiên trạng thái có chi phí đường đi từ gốc thấp nhất. Đảm bảo đường đi tối ưu khi chi phí di chuyển giữa các trạng thái bằng nhau.        |   ![UCS](gif/ucs.gif)                  |
-| **Iterative Deepening DFS (IDDFS)** | Kết hợp ưu điểm của DFS và BFS, thực hiện DFS với giới hạn độ sâu tăng dần qua từng vòng lặp. Tiết kiệm bộ nhớ hơn BFS và đảm bảo đường đi ngắn nhất.            |   ![IDDFS](gif/iddfs.gif)              |
+| **Breadth-First Search (BFS)** | Tìm kiếm theo chiều rộng, sử dụng hàng đợi (queue) để khám phá tất cả các trạng thái ở mức hiện tại trước khi chuyển sang mức sâu hơn. Đảm bảo tìm được đường đi ngắn nhất nhưng tốn bộ nhớ khi không gian trạng thái lớn.    | ![BFS](gifs/bfs.gif)                     |
+| **Depth-First Search (DFS)**   | Tìm kiếm theo chiều sâu, sử dụng ngăn xếp (stack) để khám phá nhánh sâu nhất trước khi quay lại. Không đảm bảo đường đi ngắn nhất và có thể dẫn đến vòng lặp nếu không kiểm soát.             |          ![DFS](gifs/dfs.gif)            |
+| **Uniform Cost Search (UCS)**  | Tìm kiếm chi phí đồng nhất, sử dụng hàng đợi ưu tiên (priority queue) để ưu tiên trạng thái có chi phí đường đi từ gốc thấp nhất. Đảm bảo đường đi tối ưu khi chi phí di chuyển giữa các trạng thái bằng nhau.        |   ![UCS](gifs/ucs.gif)                  |
+| **Iterative Deepening DFS (IDDFS)** | Kết hợp ưu điểm của DFS và BFS, thực hiện DFS với giới hạn độ sâu tăng dần qua từng vòng lặp. Tiết kiệm bộ nhớ hơn BFS và đảm bảo đường đi ngắn nhất.            |   ![IDDFS](gifs/iddfs.gif)              |
 
 
 #### So sánh hiệu suất và nhận xét
@@ -65,9 +65,9 @@
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **Greedy Search**   | Tìm kiếm tham lam, sử dụng hàng đợi ưu tiên để chọn trạng thái có giá trị heuristic (khoảng cách Manhattan) nhỏ nhất mà không xét chi phí từ gốc. Nhanh nhưng không đảm bảo tối ưu.          | ![Greedy](gif/greedy.gif)               |
-| **A* Search**                 | Tìm kiếm tối ưu, kết hợp chi phí từ gốc (g) và giá trị heuristic (h = Manhattan + Linear Conflict). Đảm bảo đường đi ngắn nhất nếu heuristic thỏa mãn tính chất đơn điệu (monotonic).       | ![A*](gif/a_star.gif)                |
-| **IDA* Search**               | Biến thể của A*, sử dụng tìm kiếm theo chiều sâu với ngưỡng heuristic tăng dần. Tiết kiệm bộ nhớ hơn A* nhưng có thể lặp lại việc khám phá trạng thái.               | ![IDA*](gif/ida_star.gif)               |
+| **Greedy Search**   | Tìm kiếm tham lam, sử dụng hàng đợi ưu tiên để chọn trạng thái có giá trị heuristic (khoảng cách Manhattan) nhỏ nhất mà không xét chi phí từ gốc. Nhanh nhưng không đảm bảo tối ưu.          | ![Greedy](gifs/greedy.gif)               |
+| **A* Search**                 | Tìm kiếm tối ưu, kết hợp chi phí từ gốc (g) và giá trị heuristic (h = Manhattan + Linear Conflict). Đảm bảo đường đi ngắn nhất nếu heuristic thỏa mãn tính chất đơn điệu (monotonic).       | ![A*](gifs/a_star.gif)                |
+| **IDA* Search**               | Biến thể của A*, sử dụng tìm kiếm theo chiều sâu với ngưỡng heuristic tăng dần. Tiết kiệm bộ nhớ hơn A* nhưng có thể lặp lại việc khám phá trạng thái.               | ![IDA*](gifs/ida.gif)               |
 
 #### So sánh hiệu suất và nhận xét
 1.	Greedy Best-First Search:
@@ -103,11 +103,11 @@
 #### Thuật toán và mô tả
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **Simple Hill Climbing**       | Tìm kiếm leo đồi đơn giản, chọn trạng thái láng giềng ngẫu nhiên tốt hơn trạng thái hiện tại dựa trên heuristic (Manhattan + Linear Conflict). Dễ bị kẹt ở cực trị cục bộ.                    |     |
-| **Steepest Hill Climbing**     | Tìm kiếm leo đồi dốc nhất, xem xét tất cả trạng thái láng giềng và chọn trạng thái có heuristic tốt nhất. Vẫn có nguy cơ kẹt ở cực trị cục bộ nhưng cải thiện hơn Simple Hill Climbing.    |![Steepest Hill](gif/steepest_hill.gif)  |
-| **Stochastic Hill Climbing**   | Tìm kiếm leo đồi ngẫu nhiên, chọn trạng thái láng giềng ngẫu nhiên nhưng ưu tiên trạng thái tốt hơn dựa trên xác suất. Giúp thoát khỏi cực trị cục bộ nhờ yếu tố ngẫu nhiên.           | ![Stochastic Hill](gif/stochastic_hill.gif) |
-| **Simulated Annealing**        | Mô phỏng ủ nhiệt, chấp nhận cả trạng thái xấu hơn với xác suất giảm dần theo "nhiệt độ". Nhiệt độ giảm theo thời gian (cooling rate), giúp thoát khỏi cực trị cục bộ và tìm giải pháp toàn cục.    | ![Simulated Annealing](gif/simulated_annealing.gif)   |
-| **Beam Search**                | Tìm kiếm chùm, giữ một số lượng trạng thái giới hạn (beam width) ở mỗi mức, kết hợp giữa BFS và tính tham lam. Có thể bỏ sót giải pháp tối ưu nếu beam width nhỏ.   | ![Beam Search](gif/beam.gif)     |
+| **Simple Hill Climbing**       | Tìm kiếm leo đồi đơn giản, chọn trạng thái láng giềng ngẫu nhiên tốt hơn trạng thái hiện tại dựa trên heuristic (Manhattan + Linear Conflict). Dễ bị kẹt ở cực trị cục bộ.                    |  ![Simple Hill](gifs/simple_hill.gif)   |
+| **Steepest Hill Climbing**     | Tìm kiếm leo đồi dốc nhất, xem xét tất cả trạng thái láng giềng và chọn trạng thái có heuristic tốt nhất. Vẫn có nguy cơ kẹt ở cực trị cục bộ nhưng cải thiện hơn Simple Hill Climbing.    |![Steepest Hill](gifs/steepest_hill.gif)  |
+| **Stochastic Hill Climbing**   | Tìm kiếm leo đồi ngẫu nhiên, chọn trạng thái láng giềng ngẫu nhiên nhưng ưu tiên trạng thái tốt hơn dựa trên xác suất. Giúp thoát khỏi cực trị cục bộ nhờ yếu tố ngẫu nhiên.           | ![Stochastic Hill](gifs/stochastic_hill.gif) |
+| **Simulated Annealing**        | Mô phỏng ủ nhiệt, chấp nhận cả trạng thái xấu hơn với xác suất giảm dần theo "nhiệt độ". Nhiệt độ giảm theo thời gian (cooling rate), giúp thoát khỏi cực trị cục bộ và tìm giải pháp toàn cục.    | ![Simulated Annealing](gifs/simulated_annealing.gif)   |
+| **Beam Search**                | Tìm kiếm chùm, giữ một số lượng trạng thái giới hạn (beam width) ở mỗi mức, kết hợp giữa BFS và tính tham lam. Có thể bỏ sót giải pháp tối ưu nếu beam width nhỏ.   | ![Beam Search](gifs/beam.gif)     |
 | **Genetic Algorithm**                | Thuật toán di truyền, sử dụng quần thể các trạng thái, thực hiện các phép lai ghép (crossover) và đột biến (mutation) để tiến hóa đến trạng thái mục tiêu. Phù hợp với không gian trạng thái phức tạp.   | ![Genetic Algorithm](gif/genetic.gif)     |
 
 #### So sánh hiệu suất 
@@ -166,9 +166,9 @@
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **AO Search***                | Được thiết kế để xử lý các bài toán tìm kiếm trong môi trường không xác định (non-deterministic), nơi mỗi hành động có thể dẫn đến nhiều kết quả khác nhau.   |      |
-| **Trust-Based Search**                | Thuật toán này hoạt động trong môi trường không có quan sát (non-observable), dựa trên niềm tin (belief state) và sử dụng yếu tố tin cậy (trust) để định hướng tìm kiếm.   | ![Trust-Based Search](gif/trust_search.gif)      |
-| **Trust-Based Search (Partial)**                | Thuật toán này xử lý bài toán với quan sát từng phần (partial observability), sử dụng belief state và cập nhật dựa trên các quan sát (percepts).   |  ![Trust-Based Search (Partial)](gif/trust_partial.gif)     |
+| **AO Search***                | Được thiết kế để xử lý các bài toán tìm kiếm trong môi trường không xác định (non-deterministic), nơi mỗi hành động có thể dẫn đến nhiều kết quả khác nhau.   |   ![AND-OR Search](gifs/and_or.gif)    |
+| **Trust-Based Search**                | Thuật toán này hoạt động trong môi trường không có quan sát (non-observable), dựa trên niềm tin (belief state) và sử dụng yếu tố tin cậy (trust) để định hướng tìm kiếm.   | ![Trust-Based Search](gifs/trust_search.gif)      |
+| **Trust-Based Search (Partial)**                | Thuật toán này xử lý bài toán với quan sát từng phần (partial observability), sử dụng belief state và cập nhật dựa trên các quan sát (percepts).   |  ![Trust-Based Search (Partial)](gifs/trust_partial.gif)     |
 
 
 #### So sánh hiệu suất 
@@ -214,8 +214,8 @@
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **AC-3**                |Là thuật toán đảm bảo tính nhất quán cung (arc consistency) trong bài toán CSP. Nó xử lý từng cung (arc) trong danh sách các ràng buộc bằng cách loại bỏ các giá trị không thể thỏa mãn từ miền giá trị (domains) của các biến. Thuật toán sử dụng một hàng đợi (queue) để xử lý các cung và lặp lại cho đến khi không còn cung nào cần sửa đổi hoặc phát hiện không có giải pháp nào.   |   ![AC-3](gif/backtracking.gif)     |
-| **Min-Conflicts**                | Là thuật toán tìm kiếm cục bộ dựa trên việc giảm thiểu xung đột (conflicts) trong bài toán CSP. Nó bắt đầu với một trạng thái ngẫu nhiên hoặc nhập liệu và lặp lại các bước thay đổi giá trị của các biến có xung đột để đạt được trạng thái không xung đột. Thuật toán chọn ngẫu nhiên một biến có xung đột và gán giá trị làm giảm số xung đột tối đa.   |   ![Min-Conflicts](gif/backtracking.gif)     |
+| **AC-3**                |Là thuật toán đảm bảo tính nhất quán cung (arc consistency) trong bài toán CSP. Nó xử lý từng cung (arc) trong danh sách các ràng buộc bằng cách loại bỏ các giá trị không thể thỏa mãn từ miền giá trị (domains) của các biến. Thuật toán sử dụng một hàng đợi (queue) để xử lý các cung và lặp lại cho đến khi không còn cung nào cần sửa đổi hoặc phát hiện không có giải pháp nào.   |   ![AC-3](gifs/ac_3.gif)     |
+| **Min-Conflicts**                | Là thuật toán tìm kiếm cục bộ dựa trên việc giảm thiểu xung đột (conflicts) trong bài toán CSP. Nó bắt đầu với một trạng thái ngẫu nhiên hoặc nhập liệu và lặp lại các bước thay đổi giá trị của các biến có xung đột để đạt được trạng thái không xung đột. Thuật toán chọn ngẫu nhiên một biến có xung đột và gán giá trị làm giảm số xung đột tối đa.   |   ![Min-Conflicts](gif/min_conflict.gif)     |
 | **Backtracking CSP**                | Kết hợp với AC-3 để giải bài toán CSP. Backtracking khám phá không gian trạng thái theo cách đệ quy, gán giá trị cho các biến và quay lui khi phát hiện xung đột. AC-3 được sử dụng như một bước tiền xử lý để giảm miền giá trị, và trong quá trình tìm kiếm, nó thực hiện suy luận để cập nhật miền.   |   ![Backtracking CSP](gif/backtracking.gif)     |
 
 
@@ -243,7 +243,7 @@
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **Q-Learning**                | Là thuật toán học tăng cường không mô hình (model-free) thuộc nhóm học giá trị (value-based), được sử dụng để tìm chính sách tối ưu trong môi trường rời rạc. Thuật toán học cách tối ưu hóa hành vi của tác nhân (agent) thông qua việc thử và sai (trial-and-error), dựa trên phần thưởng nhận được từ môi trường.   |   ![Q-Learning](gif/backtracking.gif)     |
+| **Q-Learning**                | Là thuật toán học tăng cường không mô hình (model-free) thuộc nhóm học giá trị (value-based), được sử dụng để tìm chính sách tối ưu trong môi trường rời rạc. Thuật toán học cách tối ưu hóa hành vi của tác nhân (agent) thông qua việc thử và sai (trial-and-error), dựa trên phần thưởng nhận được từ môi trường.   |   ![Q-Learning](gifs/q_learning.gif)     |
 
 ## Cơ chế chính của Q-Learning trong code:
 
