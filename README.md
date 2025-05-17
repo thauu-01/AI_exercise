@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/1cca4f96-d5a3-4870-9dbd-4b1a7e705f53)![image](https://github.com/user-attachments/assets/ab33e8cc-ea6b-4787-bf68-16d5488dc35b)# AI_exercise
+# AI_exercise
 
 # Đồ án cá nhân: 8-Puzzle Solver
 
