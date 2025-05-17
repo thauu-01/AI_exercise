@@ -22,7 +22,7 @@ GREEN = (0, 255, 0)
 GRAY = (180, 200, 220)
 BLUE = (0, 0, 255)
 
-# Định nghĩa các đơn vị (hàng, cột, vùng 2x3)
+
 ROWS = [[f'{chr(65+i)}{j+1}' for j in range(BOARD_SIZE)] for i in range(BOARD_SIZE)]
 COLS = [[f'{chr(65+i)}{j+1}' for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)]
 BOXES = [
@@ -118,7 +118,7 @@ class SudokuGUI:
                 val = grid[var]
                 rect = pygame.Rect(x_offset + j * CELL_SIZE, y_offset + i * CELL_SIZE, CELL_SIZE, CELL_SIZE)
                 cell_color = WHITE
-                if self.selected_cell == (i, j) and x_offset == 50:  # Chỉ highlight bảng nhập liệu
+                if self.selected_cell == (i, j) and x_offset == 50:  
                     cell_color = (144, 238, 144)
                 pygame.draw.rect(WINDOW, cell_color, rect, border_radius=5)
                 pygame.draw.rect(WINDOW, BLACK, rect, 1, border_radius=5)
