@@ -38,7 +38,7 @@ GOAL_STATE = (1, 2, 3, 4, 5, 6, 7, 8, 0)
 MOVES = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 DIRECTION_NAMES = ["Up", "Down", "Left", "Right"]
 
-# Các hàm hỗ trợ cho thuật toán AND-OR Search
+
 def tim_o_trong(state):
     state = list(state)
     for i in range(len(state)):
@@ -81,7 +81,7 @@ def generate_possible_states(observed_state, max_states=100):
             new_state[pos] = perm[idx] if idx < len(perm) else 0
         if sorted([x for x in new_state if x != "?"]) == list(range(9)):
             possible_states.append(tuple(new_state))
-        if len(possible_states) >= max_states:  # Giới hạn số lượng trạng thái
+        if len(possible_states) >= max_states:  
             break
     return possible_states
 
