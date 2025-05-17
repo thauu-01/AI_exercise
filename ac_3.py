@@ -246,7 +246,6 @@ class SudokuGUI:
         self.result = success
         self.show_solving_message = False
 
-        # Cập nhật lưới nếu có giải pháp
         if success and all(len(self.domains[var]) == 1 for var in self.grid):
             for var in self.grid:
                 if len(self.domains[var]) == 1:
