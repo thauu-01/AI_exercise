@@ -4,7 +4,7 @@
 
 ## 🎯 Mục tiêu
       
-   Xây dựng một chương trình giải bài toán 8-Puzzle sử dụng nhiều thuật toán tìm kiếm trong lĩnh vực Trí tuệ nhân tạo (AI). Chương trình cung cấp giao diện đồ họa (GUI) trực quan để nhập trạng thái ban đầu, hiển thị quá trình giải và so sánh hiệu suất của các thuật toán. Các thuật toán được triển khai bao gồm tìm kiếm không có thông tin, tìm kiếm có thông tin, tìm kiếm ràng buộc, tìm kiếm cục bộ, tìm kiếm trong môi trường không xác định, tìm kiếm ràng buộc cùng với một số thuật toán đặc biệt.
+   Xây dựng một chương trình giải bài toán 8-Puzzle sử dụng nhiều thuật toán tìm kiếm trong lĩnh vực Trí tuệ nhân tạo (AI). Chương trình cung cấp giao diện đồ họa (GUI) trực quan để nhập trạng thái ban đầu, hiển thị quá trình giải và so sánh hiệu suất của các thuật toán. Các thuật toán được triển khai bao gồm tìm kiếm không có thông tin, tìm kiếm có thông tin, tìm kiếm ràng buộc, tìm kiếm cục bộ, tìm kiếm trong môi trường không xác định, cùng với một số thuật toán đặc biệt (Q-learning).
      
 ---
 
