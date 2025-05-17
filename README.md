@@ -217,6 +217,8 @@
 | **AC-3**                |Là thuật toán đảm bảo tính nhất quán cung (arc consistency) trong bài toán CSP. Nó xử lý từng cung (arc) trong danh sách các ràng buộc bằng cách loại bỏ các giá trị không thể thỏa mãn từ miền giá trị (domains) của các biến. Thuật toán sử dụng một hàng đợi (queue) để xử lý các cung và lặp lại cho đến khi không còn cung nào cần sửa đổi hoặc phát hiện không có giải pháp nào.   |   ![AC-3](gifs/ac_3.gif)     |
 | **Min-Conflicts**                | Là thuật toán tìm kiếm cục bộ dựa trên việc giảm thiểu xung đột (conflicts) trong bài toán CSP. Nó bắt đầu với một trạng thái ngẫu nhiên hoặc nhập liệu và lặp lại các bước thay đổi giá trị của các biến có xung đột để đạt được trạng thái không xung đột. Thuật toán chọn ngẫu nhiên một biến có xung đột và gán giá trị làm giảm số xung đột tối đa.   |   ![Min-Conflicts](gifs/min-conflicts.gif)     |
 | **Backtracking CSP**                | Kết hợp với AC-3 để giải bài toán CSP. Backtracking khám phá không gian trạng thái theo cách đệ quy, gán giá trị cho các biến và quay lui khi phát hiện xung đột. AC-3 được sử dụng như một bước tiền xử lý để giảm miền giá trị, và trong quá trình tìm kiếm, nó thực hiện suy luận để cập nhật miền.   |   ![Backtracking CSP](gifs/backtracking.gif)     |
+| **Generate And Test CSP**                | Là một thuật toán đơn giản để giải bài toán CSP bằng cách sinh ngẫu nhiên hoặc có hệ thống các khả năng  cho toàn bộ bài toán và kiểm tra từng khả năng đó có thỏa mãn tất cả các ràng buộc hay không. Thuật toán bắt đầu với một trạng thái ban đầu (thường là trống hoặc ngẫu nhiên), sau đó thử gán giá trị cho từng biến theo một thứ tự xác định (thường từ trái sang phải, trên xuống dưới). Mỗi lần gán, nó kiểm tra tính nhất quán với các ràng buộc (như không trùng lặp trong hàng, cột, hoặc vùng). Nếu khả năng không thỏa mãn, thuật toán quay lui hoặc sinh khả năng mới. Quá trình tiếp tục cho đến khi tìm được một giải pháp hợp lệ hoặc xác định không có giải pháp nào.   |   ![Backtracking CSP](gifs/generate_and_test.gif)     |
+
 
 
 #### So sánh hiệu suất 
@@ -237,6 +239,12 @@
 •	Ưu điểm: Đảm bảo tìm được giải pháp tối ưu nhờ heuristic, kết hợp AC-3 để giảm quay lui. 
 
 •	Nhược điểm: Chậm hơn và mở rộng nhiều trạng thái  do khám phá toàn bộ không gian.
+
+4.	Generate and Test:
+
+•	Ưu điểm:Rất đơn giản để triển khai và dễ hiểu, không yêu cầu kỹ thuật phức tạp như heuristic. Có thể tìm giải pháp nếu không gian tìm kiếm không quá lớn và khởi tạo hợp lý.
+
+•	Nhược điểm: Hiệu suất rất thấp với bài toán có không gian trạng thái lớn  do phải thử nghiệm tất cả các khả năng. Không tối ưu và không đảm bảo tìm được giải pháp nếu không có chiến lược quay lui hiệu quả. Phụ thuộc nhiều vào thứ tự sinh khả năng.
 
 ### 2.6. Thuật toán học tăng cường
 #### Thuật toán và mô tả
