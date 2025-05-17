@@ -251,7 +251,7 @@
 
 | Thuật Toán               | Mô Tả                                                                 | Minh Họa GIF                              |
 |--------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| **Q-Learning**                | Là thuật toán học tăng cường không mô hình (model-free) thuộc nhóm học giá trị (value-based), được sử dụng để tìm chính sách tối ưu trong môi trường rời rạc. Thuật toán học cách tối ưu hóa hành vi của tác nhân (agent) thông qua việc thử và sai (trial-and-error), dựa trên phần thưởng nhận được từ môi trường.   |   ![Q-Learning](gifs/q_learning.gif)     |
+| **Q-Learning**                | Là thuật toán học tăng cường không mô hình thuộc nhóm học giá trị (value-based), được sử dụng để tìm chính sách tối ưu trong môi trường rời rạc. Thuật toán học cách tối ưu hóa hành vi của tác nhân (agent) thông qua thử và sai, dựa trên phần thưởng nhận được từ môi trường. Trong bài toán 8-puzzle, Q-Learning tìm đường đi từ trạng thái ban đầu đến trạng thái đích bằng cách tối ưu hóa giá trị Q cho các cặp trạng thái-hành động.   |   ![Q-Learning](gifs/q_learning.gif)     |
 
 ## Cơ chế chính của Q-Learning trong code:
 
