@@ -1,4 +1,4 @@
-# AI_exercise
+![image](https://github.com/user-attachments/assets/1cca4f96-d5a3-4870-9dbd-4b1a7e705f53)![image](https://github.com/user-attachments/assets/ab33e8cc-ea6b-4787-bf68-16d5488dc35b)# AI_exercise
 
 # Đồ án cá nhân: 8-Puzzle Solver
 
@@ -257,19 +257,59 @@
 
 1.	Khởi tạo: 
 
-•	Bảng Q (q_table) được khởi tạo với giá trị 0 cho mỗi cặp (trạng thái, hành động). Trạng thái là các ô trên lưới 3x3 (STATES = [(i, j) for i in range(3) for j in range(3)]), và hành động là các hướng di chuyển (ACTIONS = ['up', 'down', 'left', 'right']).
+•	Bảng Q (q_table)
 
-•	Các tham số học: alpha = 0.1 (tốc độ học), gamma = 0.9 (hệ số chiết khấu).
+      •	Được khởi tạo từ file q_table.pkl nếu file tồn tại (hàm load_q_table), hoặc khởi tạo rỗng ({}) nếu file không tồn tại.
+      
+      •	Mỗi mục trong Q-table là một cặp (trạng thái, hành động) với giá trị Q ban đầu bằng 0. Trạng thái là một tuple 9 số (ví dụ: (2, 6, 5, 8, 0, 7, 4, 3, 1)), biểu diễn lưới 3x3. Hành động thuộc tập ACTIONS = ['up', 'down', 'left', 'right'], tương ứng với các di chuyển của ô trống.
+      
+      •	Tập trạng thái hợp lệ (STATES) được tạo bằng cách lấy các hoán vị của (0, 1, ..., 8) thỏa mãn điều kiện khả nghiệm (số đảo ngược chẵn, hàm is_solvable).
+      
+•	Tham số học:
+
+      •	alpha = 0.1: Tốc độ học, quyết định mức độ cập nhật giá trị Q.
+      
+      •	gamma = 0.9: Hệ số chiết khấu, đánh giá tầm quan trọng của phần thưởng tương lai.
+      
+      •	epsilon = 0.3: Xác suất chọn hành động ngẫu nhiên (khám phá), giảm dần với epsilon_decay = 0.995 và giới hạn dưới min_epsilon = 0.01.
+      
+      •	total_episodes = 2000: Số tập huấn luyện.
+      
+      •	max_steps = 1000: Số bước tối đa mỗi tập.
+
+
+•	Trạng thái ban đầu:
+
+      •	Cố định là (2, 6, 5, 8, 0, 7, 4, 3, 1)
+      
 
 2.	Cập nhật Q-Table: 
 
-•	Trong mỗi bước (step), tác nhân chọn một hành động ngẫu nhiên (random exploration).
+•	Trong mỗi tập (episode)
+      
+      •	Bắt đầu từ trạng thái ban đầu (2, 6, 5, 8, 0, 7, 4, 3, 1).
+      
+      •	Tác nhân chọn hành động theo chiến lược epsilon-greedy:
+      
+      •	Trạng thái tiếp theo: Tính bằng hàm get_next_state, di chuyển ô trống theo hành động (up, down, left, right).
+      
+      •	Phần thưởng (reward): Được tính bởi hàm get_reward:
 
-•	Trạng thái tiếp theo (next_state) được tính dựa trên hành động hiện tại (get_next_state).
+		•	Phần thưởng (reward): -20 nếu hành động không hợp lệ (trạng thái không đổi hoặc trạng thái không khả nghiệm).
+  
+		•	Phần thưởng (reward): 200 nếu đạt trạng thái đích (GOAL_STATE).
+  
+  		•	Phần thưởng (reward): -0.1 (phạt cơ bản) + -0.5 * manhattan_distance (phạt dựa trên khoảng cách Manhattan) + 5 * correct_tiles (thưởng dựa trên số ô đúng vị trí).
+    
+		•	Phần thưởng (reward): Thêm +10 nếu giảm khoảng cách Manhattan hoặc tăng số ô đúng, -5 nếu tăng khoảng cách.
+  
+	•	Cập nhật giá trị Q: 
 
-•	Phần thưởng (reward) được lấy từ môi trường (get_reward): +10 tại ô (2,2), -1 nếu ra ngoài lưới, 0 hoặc giá trị ngẫu nhiên từ lưới (self.grid).
+      		
 
-•	Cập nhật giá trị Q theo công thức: ![image](https://github.com/user-attachments/assets/75a448b3-55e8-4c08-a754-39318afe0027)
+•	Ghi lại bước:
+
+     	 •	Mỗi bước được lưu vào self.steps với thông tin: Q[current_state, action] = old_q -> new_q (r=reward).
 
 3.	Lặp lại: 
 
