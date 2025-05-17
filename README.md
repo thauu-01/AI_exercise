@@ -303,7 +303,8 @@
     
 		•	Phần thưởng (reward): Thêm +10 nếu giảm khoảng cách Manhattan hoặc tăng số ô đúng, -5 nếu tăng khoảng cách.
   
-	•	Cập nhật giá trị Q: 
+	•	Cập nhật giá trị Q: ![image](https://github.com/user-attachments/assets/cb6541e8-66a5-478c-bd8b-1bf3fb300d14)
+
 
       		
 
