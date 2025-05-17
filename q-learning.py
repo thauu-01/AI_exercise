@@ -292,7 +292,7 @@ class QLearningGUI:
         self.current_episode = 0
         max_steps = 1000
 
-        # Sử dụng Q-table đã tải, không khởi tạo mới
+
         if len(self.q_table) > 0:
             print("Continuing training with existing Q-table")
         else:
@@ -302,7 +302,7 @@ class QLearningGUI:
             if not self.is_learning:
                 break
             self.current_episode = episode + 1
-            current_state = (2, 6, 5, 8, 0, 7, 4, 3, 1)  # Trạng thái ban đầu cố định
+            current_state = (2, 6, 5, 8, 0, 7, 4, 3, 1) 
             self.previous_state = current_state
             steps = 0
 
@@ -330,22 +330,22 @@ class QLearningGUI:
                 self.previous_state = current_state
                 steps += 1
 
-            # Giảm epsilon
+   
             current_epsilon = max(self.min_epsilon, current_epsilon * self.epsilon_decay)
 
-            # Cập nhật giao diện mỗi 10 tập
+        
             if episode % 10 == 0:
                 self.draw()
                 pygame.display.flip()
                 pygame.event.pump()
 
-            # Lưu Q-table mỗi 100 tập
+      
             if episode % 100 == 0:
                 q_table_path = r"D:\tri tue nhan tao\New folder\123\q_table.pkl"
                 with open(q_table_path, 'wb') as f:
                     pickle.dump(self.q_table, f)
 
-        # Lưu Q-table cuối cùng
+
         q_table_path = r"D:\tri tue nhan tao\New folder\123\q_table.pkl"
         with open(q_table_path, 'wb') as f:
             pickle.dump(self.q_table, f)
@@ -383,8 +383,8 @@ class QLearningGUI:
         self.result = None
 
     def reset(self):
-        self.input_state = (2, 6, 5, 8, 0, 7, 4, 3, 1)  # Đặt lại về trạng thái cố định
-        self.q_table = self.load_q_table()  # Tải lại Q-table
+        self.input_state = (2, 6, 5, 8, 0, 7, 4, 3, 1)  
+        self.q_table = self.load_q_table()  
         self.steps = []
         self.step_index = 0
         self.is_learning = False
