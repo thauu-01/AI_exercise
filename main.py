@@ -811,103 +811,6 @@ def heuristic(state, goal):
     return manhattan_distance(state, goal) + linear_conflict(state, goal)
 
 
-def trust_based_search(ban_dau, dich):
-
-    ACTIONS = {
-        'UP': -3,
-        'DOWN': 3,
-        'LEFT': -1,
-        'RIGHT': 1
-    }
-
-    def is_valid_move(state, action):
-        blank = state.index(0)
-        if action == 'UP' and blank < 3: return False
-        if action == 'DOWN' and blank > 5: return False
-        if action == 'LEFT' and blank % 3 == 0: return False
-        if action == 'RIGHT' and blank % 3 == 2: return False
-        return True
-
-    def apply_action_to_state(state, action):
-        if not is_valid_move(state, action):
-            return state
-        blank = state.index(0)
-        delta = ACTIONS[action]
-        new_blank = blank + delta
-        lst = list(state)
-        lst[blank], lst[new_blank] = lst[new_blank], lst[blank]
-        return tuple(lst)
-
-    def apply_action(belief, action):
-        new_belief = set()
-        for state in belief:
-            new_state = apply_action_to_state(state, action)
-            new_belief.add(new_state)
-        return frozenset(new_belief)
-
-    def calculate_belief_score(belief, belief_states, goal):
-  
-        heuristic_sum = 0
-        for state in belief:
-            heuristic_sum += manhattan_distance(state, goal) + linear_conflict(state, goal)
-        avg_heuristic = heuristic_sum / len(belief) if belief else float('inf')
-
-        belief_factor = 0
-        for past_belief in belief_states:
-            for state in belief:
-                for past_state in past_belief:
-                    if abs(manhattan_distance(past_state, goal) - manhattan_distance(state, goal)) < 2:
-                        belief_factor += 1
-                        break
-        belief_factor = min(belief_factor / 5.0, 2.0)  
-        return avg_heuristic - belief_factor
-
-    def is_goal(belief):
-        return len(belief) == 1 and dich in belief
-
-    def reconstruct_path(initial_state, actions):
-
-        path = [initial_state]
-        current = initial_state
-        for action in actions:
-            current = apply_action_to_state(current, action)
-            path.append(current)
-        return path
-
-
-    initial_belief = frozenset([ban_dau])
-    belief_states = deque([initial_belief], maxlen=10)  
-    pq = [(calculate_belief_score(initial_belief, belief_states, dich), 0, initial_belief, [])]
-    visited = set([initial_belief])
-    expanded = 0
-    counter = 0
-
-    while pq:
-        score, _, current_belief, action_path = heapq.heappop(pq)
-        expanded += 1
-
-        if is_goal(current_belief):
-
-            state_path = reconstruct_path(ban_dau, action_path)
-            return state_path, expanded
-
-        belief_states.append(current_belief)
-
-
-        for action in ACTIONS:
-            new_belief = apply_action(current_belief, action)
-            if new_belief not in visited:
-                visited.add(new_belief)
-                counter += 1
-                score = calculate_belief_score(new_belief, belief_states, dich)
-                heapq.heappush(pq, (score, counter, new_belief, action_path + [action]))
-
-        if len(belief_states) > 10:
-            belief_states.popleft()
-
-    return None, expanded
-
-
 # Lop Button (giu nguyen)
 class Button:
     def __init__(self, text, x, y, width, height, callback, color):
@@ -1017,20 +920,21 @@ class PuzzleGUI:
             Button("Genetic", 790, 530, 120, 50, lambda: self.solve(genetic_algorithm, "Genetic"), (100, 200, 100)),
 
             Button("AO*", 1050, 50, 200, 50, lambda: self.solve(ao_star, "AO*"), (150, 200, 150)),
-            Button("Trust Search", 1050, 110, 200, 50, lambda: self.solve(trust_based_search, "Trust Search"), (255, 99, 71)),
+            Button("Trust Search", 1050, 110, 200, 50, self.run_no_observation, BUTTON_COLORS[3]),
             Button("Trust Partial", 1050, 170, 200, 50, self.run_partial, BUTTON_COLORS[0]),
 
             
             Button("Backtracking", 1050, 290, 200, 50, self.run_backtracking, (100, 200, 200)),
-            Button("AC-3", 1050, 350, 200, 50, self.run_ac3, (100, 200, 200)),
+            Button("AC-3", 1050, 350, 200, 50, self.run_ac3, (100, 200, 100)),
             Button("Min-Conflicts", 1050, 410, 200, 50, self.run_min_conflicts, (150, 200, 150)),
+            Button("Generate & Test", 1040, 470, 220, 50, self.run_generate_and_test, (255, 99, 71)),
 
-            Button("Q-Learning", 1050, 530, 200, 50, self.run_q_learning, (120, 180, 220)),
+            Button("Q-Learning", 1050, 590, 200, 50, self.run_q_learning, (120, 180, 220)),
             
             Button("Reset", 550, 700, 120, 50, self.reset, (192, 192, 192)),
             Button("Random", 700, 700, 120, 50, self.randomize, (255, 165, 0)),
             Button("Stop", 850, 700, 120, 50, self.stop_solving, (255, 0, 0)),
-            Button("Continue", 1000, 700, 140, 50, self.continue_solving, (0, 255, 0)),
+            Button("Continue", 1000, 700, 120, 50, self.continue_solving, (0, 255, 0)),
         ]
 
         self.combo_box = ComboBox(1350, 500, 100, 50, self.speed_options, self.set_speed, (135, 206, 250))
@@ -1076,6 +980,19 @@ class PuzzleGUI:
             self.no_solution_message = "Lỗi khi chạy partial.py!"
             self.message_timer = 180
 
+
+    def run_generate_and_test(self):
+            try:
+                subprocess.run(["python", r"D:\tri tue nhan tao\New folder\123\generate_and_test.py"], check=True)
+            except FileNotFoundError:
+                self.no_solution_message = "Không tìm thấy file generate_and_test.py!"
+                self.message_timer = 180
+            except subprocess.CalledProcessError:
+                self.no_solution_message = "Lỗi khi chạy generate_and_test.py!"
+                self.message_timer = 180
+
+
+
     def run_q_learning(self):
         try:
             subprocess.run(["python", r"D:\tri tue nhan tao\New folder\123\q-learning.py"], check=True)
@@ -1084,6 +1001,16 @@ class PuzzleGUI:
             self.message_timer = 180
         except subprocess.CalledProcessError:
             self.no_solution_message = "Lỗi khi chạy q-learning.py!"
+            self.message_timer = 180
+
+    def run_no_observation(self):
+        try:
+            subprocess.run(["python", r"D:\tri tue nhan tao\New folder\123\no_observation.py"], check=True)
+        except FileNotFoundError:
+            self.no_solution_message = "Không tìm thấy file no_observation.py!"
+            self.message_timer = 180
+        except subprocess.CalledProcessError:
+            self.no_solution_message = "Lỗi khi chạy no_observation.py!"
             self.message_timer = 180
 
     def set_speed(self, speed):
@@ -1167,7 +1094,7 @@ class PuzzleGUI:
         WINDOW.blit(text_5, (1100, 250))
 
         text_5 = FONT.render("Nhom 6", True, BLACK)
-        WINDOW.blit(text_5, (1100, 480))
+        WINDOW.blit(text_5, (1100, 540))
 
         if self.show_solving_message and self.current_algorithm:
             solving_text = f"Dang giai thuat toan {self.current_algorithm}"
